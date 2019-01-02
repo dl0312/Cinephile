@@ -25,7 +25,7 @@ export const HomePresenter: React.SFC<IProps> = ({
 }) => (
   <>
     <Helmet>
-      <title>Movie | Betterboxd</title>
+      <title>Film | Betterboxd</title>
     </Helmet>
     {loading ? (
       <Loader />
@@ -41,7 +41,6 @@ export const HomePresenter: React.SFC<IProps> = ({
                 imageUrl={movie.poster_path}
                 rating={movie.vote_average}
                 year={movie.release_date && movie.release_date.substring(0, 4)}
-                isMovie={true}
               />
             ))}
           </Section>
@@ -56,7 +55,6 @@ export const HomePresenter: React.SFC<IProps> = ({
                 imageUrl={movie.poster_path}
                 rating={movie.vote_average}
                 year={movie.release_date && movie.release_date.substring(0, 4)}
-                isMovie={true}
               />
             ))}
           </Section>
@@ -71,7 +69,6 @@ export const HomePresenter: React.SFC<IProps> = ({
                 imageUrl={movie.poster_path}
                 rating={movie.vote_average}
                 year={movie.release_date && movie.release_date.substring(0, 4)}
-                isMovie={true}
               />
             ))}
           </Section>

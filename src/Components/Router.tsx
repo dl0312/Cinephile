@@ -14,9 +14,13 @@ export const Router: React.SFC = () => (
   <>
     <Header />
     <Switch>
-      <Route path="/movie/:id" component={MovieDetail} />
+      <Route path="/film/:id" component={MovieDetail} />
       <Container>
         <Route path="/" exact component={Home} />
+        <Route path="/director/:id" exact component={Home} />
+        <Route path="/films/year/:year" exact component={Home} />
+        <Route path="/film" exact component={Home} />
+        <Route path="/film" exact component={Home} />
         <Route path="/search" component={Search} />
       </Container>
       <Redirect from="*" to="/" />

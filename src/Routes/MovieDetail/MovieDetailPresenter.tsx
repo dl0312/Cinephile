@@ -5,6 +5,8 @@ import Helmet from "react-helmet";
 import { Loader } from "../../Components/Loader";
 import NoImage from "../../asset/popcorn.png";
 import { Link } from "react-router-dom";
+import { Rate } from "antd";
+import Credit from "../../Components/Credit";
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -191,34 +193,119 @@ const SideInfoSection = styled.div`
 
 const Overview = styled.div`
   overflow: hidden;
-  font-size: 1.23076923rem;
+  font-size: 1rem;
   line-height: 1.5625;
   margin-bottom: 0.625em;
 `;
 
 const Divider = styled.span`
-  margin: 0 0.6rem;
+  margin: 0 0.2rem;
+`;
+
+const Sidebar = styled.aside`
+  padding-bottom: 3rem;
+  float: right;
+  width: 15rem;
+`;
+
+const UserPanel = styled.ul`
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+  color: #bcd;
+`;
+
+const UserActionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const UserAction = styled.li`
+  padding: 1rem 0;
+  width: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #456;
+  margin-bottom: 1px;
+`;
+
+const UserActionIcon = styled.i`
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+`;
+
+const UserActionText = styled.span``;
+
+const RatingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  margin-bottom: 1px;
+  background-color: #456;
+`;
+
+const RatingText = styled.span`
+  margin-bottom: 0.2rem;
+`;
+
+const AddReview = styled.div`
+  background-color: #456;
+  padding: 1rem 0;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const AddList = styled.div`
+  background-color: #456;
+  padding: 1rem 0;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Share = styled.div`
+  background-color: #456;
+  padding: 1rem 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface IProps {
   result: any;
   credit: any;
+  directors: any;
+  creditIndex: number;
   error: string | null;
   loading: boolean;
+  handleCreditIndexChange: (creditIndex: number) => void;
 }
 
 export const MovieDetailPresenter: React.SFC<IProps> = ({
   result,
   credit,
+  directors,
+  creditIndex,
   error,
-  loading
+  loading,
+  handleCreditIndexChange
 }) =>
   loading ? (
     <Loader />
   ) : (
     <Container>
       <Helmet>
-        <title>{result.title} | Betterboxd</title>
+        <title>{result.title} | Cinephile</title>
       </Helmet>
       <Backdrop
         bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
@@ -243,7 +330,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
               </Link>
             </FilmStat>
             <FilmStat>
-              <Link to={`/movie/${result.id}/lists/by/popular/`}>
+              <Link to={`/film/${result.id}/lists/by/popular/`}>
                 <FilmStatIcon
                   style={{ color: "skyblue" }}
                   className="fas fa-th-list"
@@ -252,7 +339,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
               </Link>
             </FilmStat>
             <FilmStat>
-              <Link to={`/movie/${result.id}/likes/`}>
+              <Link to={`/film/${result.id}/likes/`}>
                 <FilmStatIcon
                   style={{ color: "orange" }}
                   className="fas fa-heart"
@@ -296,14 +383,68 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
           <TitleSection>
             <Title>{result.title}</Title>
             <Subtitle>
-              {result.release_date.substring(0, 4)}
-              <Divider>•</Divider> Directed by
+              <Link
+                style={{ textDecoration: "underline" }}
+                to={`/movies/year/${result.release_date.substring(0, 4)}`}
+              >
+                {result.release_date.substring(0, 4)}
+              </Link>
+              <Divider>•</Divider>Directed by
+              {directors.map((director: any, index: number) => {
+                console.log(director, index);
+                return (
+                  <>
+                    <Link
+                      style={{
+                        marginLeft: "0.3rem",
+                        textDecoration: "underline"
+                      }}
+                      to={`/director/${director.name}/`}
+                    >
+                      {director.name}
+                    </Link>
+                    {directors.length - 1 !== index && <span>,</span>}
+                  </>
+                );
+              })}
             </Subtitle>
           </TitleSection>
           <SideInfoSection>
             <Overview>{result.overview}</Overview>
+            <Credit
+              creditIndex={creditIndex}
+              handleCreditIndexChange={handleCreditIndexChange}
+            />
           </SideInfoSection>
         </TextInfo>
+        <Sidebar>
+          <UserPanel>
+            <UserActionContainer>
+              <UserAction style={{ borderTopLeftRadius: 4 }}>
+                <UserActionIcon className="far fa-eye" />
+                <UserActionText>봤어요</UserActionText>
+              </UserAction>
+              <UserAction>
+                <UserActionIcon className="far fa-heart" />
+                <UserActionText>좋아요</UserActionText>
+              </UserAction>
+              <UserAction style={{ borderTopRightRadius: 4 }}>
+                <UserActionIcon className="far fa-clock" />
+                <UserActionText>보고싶어요</UserActionText>
+              </UserAction>
+            </UserActionContainer>
+            <RatingContainer>
+              <RatingText>평점</RatingText>
+              <Rate
+                style={{ fontSize: 30, color: "goldenrod", marginLeft: 10 }}
+                allowHalf
+              />
+            </RatingContainer>
+            <AddReview>리뷰 작성</AddReview>
+            <AddList>컬렉션 추가</AddList>
+            <Share>공유</Share>
+          </UserPanel>
+        </Sidebar>
         {/* <Data>
           <ItemContainer>
             <Item>{result.release_date.substring(0, 4)}</Item>

@@ -58,7 +58,6 @@ interface IProps {
   title: string;
   rating: number;
   year: string;
-  isMovie?: boolean;
 }
 
 export const Poster: React.SFC<IProps> = ({
@@ -66,10 +65,9 @@ export const Poster: React.SFC<IProps> = ({
   imageUrl,
   title,
   rating,
-  year,
-  isMovie = false
+  year
 }) => (
-  <Link to={isMovie ? `/movie/${id}` : `/tv/${id}`}>
+  <Link to={`/film/${id}`}>
     <Container>
       <ImageContainer>
         <Image

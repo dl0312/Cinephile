@@ -16,6 +16,8 @@ interface IProps {
 interface IState {
   result: any;
   credit: any;
+  directors: any;
+  creditIndex: number;
   error: string | null;
   loading: boolean;
 }
@@ -29,6 +31,8 @@ export default class MovieDetailContainer extends React.Component<
     this.state = {
       result: null,
       credit: null,
+      directors: null,
+      creditIndex: 0,
       error: null,
       loading: true
     };
@@ -49,7 +53,10 @@ export default class MovieDetailContainer extends React.Component<
       try {
         const { data: result } = await moviesApi.detail(parsedId);
         const { data: credit } = await moviesApi.credit(parsedId);
-        this.setState({ result, credit, loading: true });
+        const directors = credit.crew.filter(
+          (credit: any) => credit.job === "Director"
+        );
+        this.setState({ result, credit, directors, loading: true });
       } catch (error) {
         this.setState({ error: error.message });
       } finally {
@@ -63,15 +70,34 @@ export default class MovieDetailContainer extends React.Component<
     }
   }
 
+  handleCreditIndexChange = (creditIndex: number) => {
+    this.setState({ creditIndex });
+  };
+
   render() {
-    console.log(this.state);
-    const { result, credit, error, loading } = this.state;
+    const {
+      result,
+      credit,
+      directors,
+      creditIndex,
+      error,
+      loading
+    } = this.state;
+    console.log(
+      this.state.result,
+      this.state.credit && this.state.credit.cast,
+      this.state.credit && this.state.credit.crew
+    );
+
     return (
       <MovieDetailPresenter
         result={result}
         credit={credit}
+        directors={directors}
+        creditIndex={creditIndex}
         error={error}
         loading={loading}
+        handleCreditIndexChange={this.handleCreditIndexChange}
       />
     );
   }
