@@ -21,7 +21,7 @@ const Header = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  height: 50px;
+  height: 6rem;
   display: flex;
   align-items: center;
   z-index: 10;
@@ -36,7 +36,7 @@ const Header = styled.header`
 `;
 
 const List = styled.ul`
-  margin: 2rem auto 0;
+  margin: 0 auto;
   height: 6rem;
   width: 60rem;
   display: flex;
@@ -51,8 +51,7 @@ const NavList = styled.ul`
 `;
 
 const LogoImage = styled.img`
-  height: 50px;
-
+  height: 3rem;
   position: relative;
   z-index: 2;
 `;
@@ -62,8 +61,8 @@ interface IItemProps {
 }
 
 const Item = styled("li")<IItemProps>`
-  width: 80px;
-  height: 50px;
+  width: 6rem;
+  height: 3rem;
   text-align: center;
   border-bottom: 3px solid
     ${props => (props.current ? "#3498db" : "transparent")};
@@ -71,7 +70,7 @@ const Item = styled("li")<IItemProps>`
 `;
 
 const SLink = styled(Link)`
-  height: 50px;
+  height: 3rem;
   font-size: 1.5rem;
   font-weight: 900;
   display: flex;
@@ -92,9 +91,15 @@ export default withRouter(({ location: { pathname } }) => (
         <LogoImage src={Logo} />
       </Link>
       <NavList>
-        <Item current={pathname === "/"}>
-          <SLink to="/">영화</SLink>
+        <Item current={pathname === "/login"}>
+          <SLink to="/login">로그인</SLink>
         </Item>
+        <Item current={pathname === "/register"}>
+          <SLink to="/register">회원가입</SLink>
+        </Item>
+        {/* <Item current={pathname === "/"}>
+          <SLink to="/">영화</SLink>
+        </Item> */}
         <Item current={pathname === "/search"}>
           <SLink to="/search">검색</SLink>
         </Item>

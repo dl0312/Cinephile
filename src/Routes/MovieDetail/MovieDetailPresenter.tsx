@@ -21,7 +21,7 @@ interface IBackdropProps {
 
 const Backdrop = styled("div")<IBackdropProps>`
   position: absolute;
-  top: -5rem;
+  top: -8rem;
   left: 0;
   width: 1200px;
   height: 675px;

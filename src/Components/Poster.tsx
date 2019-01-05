@@ -13,7 +13,8 @@ interface IImageProps {
 
 const Image = styled("div")<IImageProps>`
   background: url(${props => props.bgUrl});
-  height: 11rem;
+  width: 8rem;
+  height: 11.5rem;
   background-size: cover;
   border-radius: 0.3rem;
   background-position: center center;
