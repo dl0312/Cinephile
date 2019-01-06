@@ -93,6 +93,7 @@ const SLink = styled(Link)`
   font-family: "Nanum Gothic", sans-serif;
   position: relative;
   z-index: 2;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
   /* letter-spacing: 0.5rem; */
 `;
 

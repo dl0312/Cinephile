@@ -5,7 +5,9 @@ import { Avatar } from "antd";
 const DownArrow = styled.i`
   position: relative;
   z-index: 3;
-  margin-top: -0.4rem;
+  transition: 0.25s ease-in-out;
+
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 `;
 
 const MenuContainer = styled.div`
@@ -31,12 +33,13 @@ const Container = styled.div`
   position: relative;
   z-index: 2;
   /* transition: 0.5s ease-in-out; */
-  background-color: transparent;
-  background-image: transparent;
   cursor: pointer;
   &:hover {
     ${MenuContainer} {
-      height: 32.5rem;
+      height: 33rem;
+    }
+    ${DownArrow} {
+      transform: rotate(180deg);
     }
   }
 `;
@@ -45,12 +48,21 @@ const UserNickName = styled.div`
   position: relative;
   z-index: 3;
   margin-right: 0.5rem;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 `;
 
 const Menu = styled.ul`
   padding-top: 3rem;
   border-radius: 5px;
-  background: #89a;
+  /* background: #89a; */
+  background-color: #4158d0;
+  background-image: linear-gradient(
+    43deg,
+    #4158d0 0%,
+    #c850c0 46%,
+    #ffcc70 100%
+  );
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -60,9 +72,23 @@ const Menu = styled.ul`
 
 const Item = styled.li`
   width: 100%;
-  padding: 0.7rem 2rem;
+  padding: 0.7rem 1.5rem;
   text-align: left;
   border-top: 0.5px solid rgba(0, 0, 0, 0.5);
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 1);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  transition: 0.2s ease-in-out;
+  &:hover {
+    font-size: 1.5rem;
+    padding: 1rem 1.5rem;
+  }
+`;
+
+const ItemIcon = styled.i`
+  margin-right: 0.5rem;
+  min-width: 1.3rem;
 `;
 
 interface IProps {
@@ -96,21 +122,53 @@ export default class HeaderProfile extends React.Component<IProps, {}> {
           />
         )}
         <UserNickName>{user.nickName}</UserNickName>
-        <DownArrow className="fas fa-sort-down" />
+        <DownArrow className="fas fa-angle-down" />
         <MenuContainer>
           <Menu>
-            <Item>홈</Item>
-            <Item>프로필</Item>
-            <Item>내 영화</Item>
-            <Item>다이어리</Item>
-            <Item>내 리뷰</Item>
-            <Item>내가 본 영화</Item>
-            <Item>내 컬렉션</Item>
-            <Item>좋아요</Item>
-            <Item>태그</Item>
-            <Item>네트워크</Item>
-            <Item>설정</Item>
-            <Item>로그아웃</Item>
+            <Item>
+              <ItemIcon className="fas fa-home" />
+              <span>홈</span>
+            </Item>
+            <Item>
+              <ItemIcon className="far fa-user" />
+              <span>프로필</span>
+            </Item>
+            <Item>
+              <ItemIcon className="fas fa-film" />
+              <span>내 영화</span>
+            </Item>
+            <Item>
+              <ItemIcon className="fas fa-pencil-alt" />
+              <span>감상평</span>
+            </Item>
+            <Item>
+              <ItemIcon className="far fa-bookmark" />
+              <span>보고싶어요</span>
+            </Item>
+            <Item>
+              <ItemIcon className="far fa-list-alt" />
+              <span>컬렉션</span>
+            </Item>
+            <Item>
+              <ItemIcon className="far fa-thumbs-up" />
+              <span>좋아요</span>
+            </Item>
+            <Item>
+              <ItemIcon className="fas fa-hashtag" />
+              <span>태그</span>
+            </Item>
+            <Item>
+              <ItemIcon className="fab fa-connectdevelop" />
+              <span>네트워크</span>
+            </Item>
+            <Item>
+              <ItemIcon className="fas fa-cogs" />
+              <span>설정</span>
+            </Item>
+            <Item>
+              <ItemIcon className="fas fa-sign-out-alt" />
+              <span>로그아웃</span>
+            </Item>
           </Menu>
         </MenuContainer>
       </Container>
