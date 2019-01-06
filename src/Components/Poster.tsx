@@ -15,6 +15,8 @@ const Image = styled("div")<IImageProps>`
   background: url(${props => props.bgUrl});
   width: 8rem;
   height: 11.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(221, 238, 255, 0.35);
   background-size: cover;
   border-radius: 0.3rem;
   background-position: center center;
@@ -26,7 +28,6 @@ const Rating = styled.span`
   right: 0.3rem;
   position: absolute;
   opacity: 0;
-  transition: 0.1s ease-in-out;
 `;
 
 const ImageContainer = styled.div`
@@ -34,7 +35,7 @@ const ImageContainer = styled.div`
   position: relative;
   &:hover {
     ${Image} {
-      opacity: 0.3;
+      filter: brightness(0.5);
     }
     ${Rating} {
       opacity: 1;

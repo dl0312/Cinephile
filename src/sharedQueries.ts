@@ -77,3 +77,21 @@ export const SIGNUP_MUTATION = gql`
     }
   }
 `;
+
+export const GET_MY_PROFILE_QUERY = gql`
+  query getMyProfile {
+    GetMyProfile {
+      ok
+      error
+      user {
+        id
+        email
+        nickName
+        birthday
+        gender
+        password
+        profilePhoto
+      }
+    }
+  }
+`;

@@ -103,6 +103,35 @@ export interface emailSignUpVariables {
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL query operation: getMyProfile
+// ====================================================
+
+export interface getMyProfile_GetMyProfile_user {
+  __typename: "User";
+  id: number;
+  email: string | null;
+  nickName: string;
+  birthday: string | null;
+  gender: string | null;
+  password: string | null;
+  profilePhoto: string | null;
+}
+
+export interface getMyProfile_GetMyProfile {
+  __typename: "GetMyProfileResponse";
+  ok: boolean;
+  error: string | null;
+  user: getMyProfile_GetMyProfile_user | null;
+}
+
+export interface getMyProfile {
+  GetMyProfile: getMyProfile_GetMyProfile;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
 //==============================================================
 // START Enums and Input Objects
 //==============================================================

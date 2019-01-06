@@ -2,6 +2,11 @@ import React from "react";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../asset/logo.png";
+import { getMyProfile } from "../types/api";
+import { Query } from "react-apollo";
+import { toast } from "react-toastify";
+import HeaderProfile from "./HeaderProfile";
+import { GET_MY_PROFILE_QUERY } from "../sharedQueries";
 
 interface IGradientBackgroundProps {
   darken: boolean;
@@ -60,12 +65,17 @@ const LogoImage = styled.img`
   z-index: 2;
 `;
 
+const ProfileContainer = styled.div`
+  height: 3rem;
+  text-align: center;
+`;
+
 interface IItemProps {
   current: boolean;
 }
 
 const Item = styled("li")<IItemProps>`
-  width: 6rem;
+  padding: 0 1rem;
   height: 3rem;
   text-align: center;
   border-bottom: 3px solid
@@ -75,17 +85,18 @@ const Item = styled("li")<IItemProps>`
 
 const SLink = styled(Link)`
   height: 3rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Nanum Gothic", sans-serif;
-
   position: relative;
   z-index: 2;
   /* letter-spacing: 0.5rem; */
 `;
+
+class GetMyProfileQuery extends Query<getMyProfile> {}
 
 interface IProps extends RouteComponentProps<any> {
   isLoggedIn: boolean;
@@ -135,9 +146,47 @@ class Header extends React.Component<IProps, IState> {
           </Link>
           <NavList>
             {isLoggedIn ? (
-              <Item current={pathname === "/login"}>
-                <SLink to="/login">로그아웃</SLink>
-              </Item>
+              <GetMyProfileQuery
+                query={GET_MY_PROFILE_QUERY}
+                fetchPolicy={"cache-and-network"}
+              >
+                {({ loading, error, data }) => {
+                  console.log(loading, error, data);
+                  if (loading) {
+                    return null;
+                  }
+                  if (error) {
+                    toast.error(error.message);
+                    return null;
+                  }
+                  if (data !== undefined) {
+                    const user = data.GetMyProfile.user;
+                    return (
+                      user && (
+                        <>
+                          <ProfileContainer>
+                            <HeaderProfile user={user} />
+                          </ProfileContainer>
+                          <Item current={pathname === "/community"}>
+                            <SLink to="/community">영화수다</SLink>
+                          </Item>
+                          <Item current={pathname === "/ticket"}>
+                            <SLink to="/ticket">표나누기</SLink>
+                          </Item>
+                          <Item current={pathname === "/goods"}>
+                            <SLink to="/goods">굿즈나눔 교환</SLink>
+                          </Item>
+                          <Item current={pathname === "/search"}>
+                            <SLink to="/search">검색</SLink>
+                          </Item>
+                        </>
+                      )
+                    );
+                  } else {
+                    return null;
+                  }
+                }}
+              </GetMyProfileQuery>
             ) : (
               <>
                 <Item current={pathname === "/login"}>
@@ -146,14 +195,20 @@ class Header extends React.Component<IProps, IState> {
                 <Item current={pathname === "/register"}>
                   <SLink to="/register">회원가입</SLink>
                 </Item>
+                <Item current={pathname === "/community"}>
+                  <SLink to="/community">영화수다</SLink>
+                </Item>
+                <Item current={pathname === "/ticket"}>
+                  <SLink to="/ticket">표나누기</SLink>
+                </Item>
+                <Item current={pathname === "/goods"}>
+                  <SLink to="/goods">굿즈나눔 교환</SLink>
+                </Item>
+                <Item current={pathname === "/search"}>
+                  <SLink to="/search">검색</SLink>
+                </Item>
               </>
             )}
-            {/* <Item current={pathname === "/"}>
-            <SLink to="/">영화</SLink>
-          </Item> */}
-            <Item current={pathname === "/search"}>
-              <SLink to="/search">검색</SLink>
-            </Item>
           </NavList>
         </List>
       </Container>

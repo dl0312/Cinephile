@@ -46,7 +46,7 @@ export default class MovieDetailContainer extends React.Component<
       productionDesigns: null,
       composers: null,
       costumes: null,
-      creditIndex: 2,
+      creditIndex: 0,
       error: null,
       loading: true
     };
