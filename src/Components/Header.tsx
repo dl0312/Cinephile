@@ -7,6 +7,7 @@ import { Query } from "react-apollo";
 import { toast } from "react-toastify";
 import HeaderProfile from "./HeaderProfile";
 import { GET_MY_PROFILE_QUERY } from "../sharedQueries";
+import HeaderSearch from "./HeaderSearch";
 
 interface IGradientBackgroundProps {
   darken: boolean;
@@ -47,7 +48,7 @@ const Container = styled.header`
 const List = styled.ul`
   margin: 0 auto;
   height: 6rem;
-  width: 60rem;
+  min-width: 60rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,9 +66,12 @@ const LogoImage = styled.img`
   z-index: 2;
 `;
 
-const ProfileContainer = styled.div`
+const CustomHeaderContainer = styled.div`
   height: 3rem;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface IItemProps {
@@ -165,9 +169,9 @@ class Header extends React.Component<IProps, IState> {
                     return (
                       user && (
                         <>
-                          <ProfileContainer>
+                          <CustomHeaderContainer>
                             <HeaderProfile user={user} />
-                          </ProfileContainer>
+                          </CustomHeaderContainer>
                           <Item current={pathname === "/community"}>
                             <SLink to="/community">영화수다</SLink>
                           </Item>
@@ -177,9 +181,9 @@ class Header extends React.Component<IProps, IState> {
                           <Item current={pathname === "/goods"}>
                             <SLink to="/goods">굿즈나눔 교환</SLink>
                           </Item>
-                          <Item current={pathname === "/search"}>
-                            <SLink to="/search">검색</SLink>
-                          </Item>
+                          <CustomHeaderContainer>
+                            <HeaderSearch />
+                          </CustomHeaderContainer>
                         </>
                       )
                     );
@@ -205,9 +209,9 @@ class Header extends React.Component<IProps, IState> {
                 <Item current={pathname === "/goods"}>
                   <SLink to="/goods">굿즈나눔 교환</SLink>
                 </Item>
-                <Item current={pathname === "/search"}>
-                  <SLink to="/search">검색</SLink>
-                </Item>
+                <CustomHeaderContainer>
+                  <HeaderSearch />
+                </CustomHeaderContainer>
               </>
             )}
           </NavList>

@@ -24,6 +24,11 @@ const globalStyles = createGlobalStyle`
         background-color:#14181C;
         color:white;
     }
+    input{
+        &:focus{
+            outline: none;
+        }
+    }
 `;
 
 export default globalStyles;

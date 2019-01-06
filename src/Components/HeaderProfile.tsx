@@ -98,7 +98,6 @@ interface IProps {
 export default class HeaderProfile extends React.Component<IProps, {}> {
   render() {
     const { user } = this.props;
-    console.log(user);
     return (
       <Container>
         {user.profilePhoto ? (

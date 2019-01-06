@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "../Routes/Home";
 import MovieDetail from "../Routes/MovieDetail";
 import Search from "../Routes/Search";
@@ -12,8 +12,9 @@ import Ticket from "../Routes/Ticket";
 import Goods from "../Routes/Goods";
 
 const Container = styled.div`
-  margin-top: 6rem;
+  margin: 6rem auto 0;
   padding: 2rem;
+  width: 60rem;
 `;
 
 // function PrivateRoute({ component: Component, isLoggedIn, ...rest }: any) {
@@ -49,17 +50,18 @@ export const Router: React.SFC<IProps> = ({ isLoggedIn }) => (
           <>
             <Header isLoggedIn={isLoggedIn} />
             <Container>
-              <Route path="/film/:id" component={MovieDetail} />
-              <Route path="/" exact component={Home} />
-              <Route path="/director/:id" exact component={Home} />
-              <Route path="/films/year/:year" exact component={Home} />
-              <Route path="/film" exact component={Home} />
-              <Route path="/search" component={Search} />
-              <Route path="/community" component={Community} />
-              <Route path="/ticket" component={Ticket} />
-              <Route path="/goods" component={Goods} />
-
-              <Redirect from="*" to="/" />
+              <Switch>
+                <Route path="/film/:id" component={MovieDetail} />
+                <Route path="/" exact component={Home} />
+                <Route path="/director/:id" exact component={Home} />
+                <Route path="/films/year/:year" exact component={Home} />
+                <Route path="/film" exact component={Home} />
+                <Route path="/community" component={Community} />
+                <Route path="/ticket" component={Ticket} />
+                <Route path="/goods" component={Goods} />
+                <Route path="/search/:term" component={Search} />
+                <Redirect from="*" to="/" />
+              </Switch>
             </Container>
           </>
         )}
