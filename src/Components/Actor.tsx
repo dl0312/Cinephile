@@ -82,7 +82,7 @@ export default class Actor extends React.Component<IProps> {
           )}
           <TextContainer>
             <Name>{name}</Name>
-            <Charector>{character} 역</Charector>
+            {character && <Charector>{character} 역</Charector>}
           </TextContainer>
         </Container>
       </Link>

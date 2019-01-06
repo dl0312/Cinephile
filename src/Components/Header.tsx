@@ -1,21 +1,25 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../asset/logo.png";
 
-const GradientBackground = styled.div`
+interface IGradientBackgroundProps {
+  darken: boolean;
+}
+
+const GradientBackground = styled("div")<IGradientBackgroundProps>`
   top: 0;
   bottom: -2rem;
   left: 0;
   right: 0;
   position: absolute;
   z-index: 1;
-  opacity: 0.5;
+  opacity: ${props => (props.darken ? "1" : "0.5")};
   background: linear-gradient(to bottom, rgba(20, 20, 20, 1), transparent);
   transition: 1s ease-in-out;
 `;
 
-const Header = styled.header`
+const Container = styled.header`
   color: white;
   position: fixed;
   top: 0;
@@ -83,27 +87,78 @@ const SLink = styled(Link)`
   /* letter-spacing: 0.5rem; */
 `;
 
-export default withRouter(({ location: { pathname } }) => (
-  <Header>
-    <GradientBackground />
-    <List>
-      <Link to={"/"}>
-        <LogoImage src={Logo} />
-      </Link>
-      <NavList>
-        <Item current={pathname === "/login"}>
-          <SLink to="/login">로그인</SLink>
-        </Item>
-        <Item current={pathname === "/register"}>
-          <SLink to="/register">회원가입</SLink>
-        </Item>
-        {/* <Item current={pathname === "/"}>
-          <SLink to="/">영화</SLink>
-        </Item> */}
-        <Item current={pathname === "/search"}>
-          <SLink to="/search">검색</SLink>
-        </Item>
-      </NavList>
-    </List>
-  </Header>
-));
+interface IProps extends RouteComponentProps<any> {
+  isLoggedIn: boolean;
+}
+
+interface IState {
+  darken: boolean;
+}
+
+class Header extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      darken: false
+    };
+  }
+
+  handleScrollHeader = () => {
+    const scrollHeight = window.scrollY;
+    if (scrollHeight > 75) {
+      this.setState({ darken: true });
+    } else {
+      this.setState({ darken: false });
+    }
+  };
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScrollHeader);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScrollHeader);
+  }
+
+  render() {
+    const {
+      location: { pathname },
+      isLoggedIn
+    } = this.props;
+    const { darken } = this.state;
+    return (
+      <Container>
+        <GradientBackground darken={darken} />
+        <List>
+          <Link to={"/"}>
+            <LogoImage src={Logo} />
+          </Link>
+          <NavList>
+            {isLoggedIn ? (
+              <Item current={pathname === "/login"}>
+                <SLink to="/login">로그아웃</SLink>
+              </Item>
+            ) : (
+              <>
+                <Item current={pathname === "/login"}>
+                  <SLink to="/login">로그인</SLink>
+                </Item>
+                <Item current={pathname === "/register"}>
+                  <SLink to="/register">회원가입</SLink>
+                </Item>
+              </>
+            )}
+            {/* <Item current={pathname === "/"}>
+            <SLink to="/">영화</SLink>
+          </Item> */}
+            <Item current={pathname === "/search"}>
+              <SLink to="/search">검색</SLink>
+            </Item>
+          </NavList>
+        </List>
+      </Container>
+    );
+  }
+}
+
+export default withRouter(Header);

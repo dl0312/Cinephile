@@ -3,12 +3,24 @@ import { Router } from "./Router";
 import GlobalStyles from "./GlobalStyles";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { IS_LOGGED_IN } from "../sharedQueries.local";
+import { graphql } from "react-apollo";
 
-class App extends React.Component {
+interface IProps {
+  data: any;
+}
+
+class App extends React.Component<IProps, any> {
   render() {
+    console.log(this.props);
+    const {
+      data: {
+        auth: { isLoggedIn }
+      }
+    } = this.props;
     return (
       <>
-        <Router />
+        <Router isLoggedIn={isLoggedIn} />
         <GlobalStyles />
         <ToastContainer
           draggable={true}
@@ -22,4 +34,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default graphql<IProps>(IS_LOGGED_IN)(App);

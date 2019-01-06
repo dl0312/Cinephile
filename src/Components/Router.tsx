@@ -13,7 +13,11 @@ const Container = styled.div`
   padding: 2rem;
 `;
 
-export const Router: React.SFC = () => (
+interface IProps {
+  isLoggedIn: boolean;
+}
+
+export const Router: React.SFC<IProps> = ({ isLoggedIn }) => (
   <>
     <Switch>
       <Route path="/login" exact={true} component={LogIn} />
@@ -23,7 +27,7 @@ export const Router: React.SFC = () => (
         exact={true}
         render={({ location }) => (
           <>
-            <Header />
+            <Header isLoggedIn={isLoggedIn} />
             <Container>
               <Route path="/film/:id" component={MovieDetail} />
               <Route path="/" exact component={Home} />
