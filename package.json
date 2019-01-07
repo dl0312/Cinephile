@@ -3,17 +3,19 @@
   "version": "0.1.0",
   "description": "Movie Discovery App (like Letterboxd) with React, ES6, THE MOVIE DB",
   "main": "index.js",
-  "repository": "https://github.com/dl0312/Betterboxd",
+  "repository": "https://github.com/dl0312/Cinephile",
+  "homepage": "https://dl0312.github.io/Cinephile",
   "author": "dl0312 <leegun2003@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "node scripts/build.js",
+    "build": "react-scripts build",
     "precodegen": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries=\"src/**/!(*.local).ts\" --localSchemaFile schema.json --target typescript --outputFlat",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "react-scripts build",
+    "deploy": "gh-pages -d build",
+    "now-build": "react-scripts build && mv build dist"
   },
   "dependencies": {
     "@types/antd": "^1.0.0",
