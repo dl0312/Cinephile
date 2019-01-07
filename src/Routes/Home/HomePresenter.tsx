@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
-import { Section } from "../../Components/Section";
-import { Loader } from "../../Components/Loader";
-import { Poster } from "../../Components/Poster";
-import { Message } from "../../Components/Message";
+import Section from "../../Components/Section";
+import { moviesApi } from "../../api";
 
 const Container = styled.div`
   margin: 30rem 0;
@@ -48,84 +46,22 @@ const SectionContainer = styled.div`
   margin: 0 auto;
 `;
 
-interface IProps {
-  nowPlaying: any[] | null;
-  popular: any[] | null;
-  upcoming: any[] | null;
-  error: string | null;
-  loading: boolean;
-}
+interface IProps {}
 
-export const HomePresenter: React.SFC<IProps> = ({
-  nowPlaying,
-  popular,
-  upcoming,
-  error,
-  loading
-}) => (
+export const HomePresenter: React.SFC<IProps> = ({}) => (
   <>
     <Helmet>
       <title>Film | Betterboxd</title>
     </Helmet>
-    {loading ? (
-      <Loader />
-    ) : (
-      <Container>
-        <Backdrop
-          bgImage={`https://image.tmdb.org/t/p/original/nadTlnTE6DdgmYsN4iWc2a2wiaI.jpg`}
-        />
-        <SectionContainer>
-          {nowPlaying && nowPlaying.length !== 0 && (
-            <Section title="현재 상영중">
-              {nowPlaying.map(movie => (
-                <Poster
-                  key={movie.id}
-                  title={movie.title}
-                  id={movie.id}
-                  imageUrl={movie.poster_path}
-                  rating={movie.vote_average}
-                  year={
-                    movie.release_date && movie.release_date.substring(0, 4)
-                  }
-                />
-              ))}
-            </Section>
-          )}
-          {popular && popular.length !== 0 && (
-            <Section title="인기 작품">
-              {popular.map(movie => (
-                <Poster
-                  key={movie.id}
-                  title={movie.title}
-                  id={movie.id}
-                  imageUrl={movie.poster_path}
-                  rating={movie.vote_average}
-                  year={
-                    movie.release_date && movie.release_date.substring(0, 4)
-                  }
-                />
-              ))}
-            </Section>
-          )}
-          {upcoming && upcoming.length !== 0 && (
-            <Section title="개봉 예정작">
-              {upcoming.map(movie => (
-                <Poster
-                  key={movie.id}
-                  title={movie.title}
-                  id={movie.id}
-                  imageUrl={movie.poster_path}
-                  rating={movie.vote_average}
-                  year={
-                    movie.release_date && movie.release_date.substring(0, 4)
-                  }
-                />
-              ))}
-            </Section>
-          )}
-        </SectionContainer>
-        {error && <Message color="#e74c3c" text={error} />}
-      </Container>
-    )}
+    <Container>
+      <Backdrop
+        bgImage={`https://image.tmdb.org/t/p/original/nadTlnTE6DdgmYsN4iWc2a2wiaI.jpg`}
+      />
+      <SectionContainer>
+        <Section title="현재 상영중" getAPI={moviesApi.nowPlaying} />
+        <Section title="인기 작품" getAPI={moviesApi.popular} />
+        <Section title="개봉 예정작" getAPI={moviesApi.upcoming} />
+      </SectionContainer>
+    </Container>
   </>
 );

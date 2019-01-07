@@ -156,7 +156,6 @@ class Header extends React.Component<IProps, IState> {
                 fetchPolicy={"cache-and-network"}
               >
                 {({ loading, error, data }) => {
-                  console.log(loading, error, data);
                   if (loading) {
                     return null;
                   }
