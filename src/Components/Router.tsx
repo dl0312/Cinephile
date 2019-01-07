@@ -10,6 +10,7 @@ import styled from "styled-components";
 import Community from "../Routes/Community";
 import Ticket from "../Routes/Ticket";
 import Goods from "../Routes/Goods";
+import CommunityAdd from "../Routes/CommunityAdd";
 
 const Container = styled.div`
   margin: 6rem auto 0;
@@ -41,25 +42,26 @@ interface IProps {
 export const Router: React.SFC<IProps> = ({ isLoggedIn }) => (
   <>
     <Switch>
-      <Route path="/login" exact={true} component={LogIn} />
-      <Route path="/register" exact={true} component={Register} />
+      <Route path="/login" exact component={LogIn} />
+      <Route path="/register" exact component={Register} />
       <Route
         path={"*"}
-        exact={true}
+        exact
         render={({ location }) => (
           <>
             <Header isLoggedIn={isLoggedIn} />
             <Container>
               <Switch>
-                <Route path="/film/:id" component={MovieDetail} />
+                <Route path="/film/:id" exact component={MovieDetail} />
                 <Route path="/" exact component={Home} />
                 <Route path="/director/:id" exact component={Home} />
                 <Route path="/films/year/:year" exact component={Home} />
                 <Route path="/film" exact component={Home} />
-                <Route path="/community" component={Community} />
-                <Route path="/ticket" component={Ticket} />
-                <Route path="/goods" component={Goods} />
-                <Route path="/search/:term" component={Search} />
+                <Route path="/community/add" exact component={CommunityAdd} />
+                <Route path="/community" exact component={Community} />
+                <Route path="/ticket" exact component={Ticket} />
+                <Route path="/goods" exact component={Goods} />
+                <Route path="/search/:term" exact component={Search} />
                 <Redirect from="*" to="/" />
               </Switch>
             </Container>

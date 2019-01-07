@@ -29,6 +29,12 @@ const globalStyles = createGlobalStyle`
             outline: none;
         }
     }
+    .demo-editor {
+        height: 30rem !important;
+        border: 1px solid #F1F1F1 !important;
+        padding: 5px !important;
+        border-radius: 2px !important;
+    }
 `;
 
 export default globalStyles;
