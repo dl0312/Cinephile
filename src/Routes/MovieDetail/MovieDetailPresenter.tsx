@@ -11,7 +11,6 @@ import Credit from "../../Components/Credit";
 const Container = styled.div`
   width: 100%;
   position: relative;
-  padding: 3rem;
 `;
 
 interface IBackdropProps {
@@ -519,7 +518,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
                         marginLeft: "0.3rem",
                         textDecoration: "underline"
                       }}
-                      to={`/director/${director.name}/`}
+                      to={`/person/${director.id}/`}
                     >
                       {director.name}
                     </Link>

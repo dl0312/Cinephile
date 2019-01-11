@@ -11,10 +11,12 @@ import Community from "../Routes/Community";
 import Ticket from "../Routes/Ticket";
 import Goods from "../Routes/Goods";
 import CommunityAdd from "../Routes/CommunityAdd";
+import CommunityDetail from "../Routes/CommunityDetail";
+import CommunityEdit from "../Routes/CommunityEdit";
+import PersonDetail from "../Routes/PersonDetail";
 
 const Container = styled.div`
   margin: 6rem auto 0;
-  padding: 2rem;
   width: 60rem;
 `;
 
@@ -54,11 +56,22 @@ export const Router: React.SFC<IProps> = ({ isLoggedIn }) => (
               <Switch>
                 <Route path="/film/:id" exact component={MovieDetail} />
                 <Route path="/" exact component={Home} />
-                <Route path="/director/:id" exact component={Home} />
+                <Route path="/person/:id" exact component={PersonDetail} />
                 <Route path="/films/year/:year" exact component={Home} />
                 <Route path="/film" exact component={Home} />
                 <Route path="/community/add" exact component={CommunityAdd} />
-                <Route path="/community" exact component={Community} />
+                <Route
+                  path="/community/edit/:postId"
+                  exact
+                  component={CommunityEdit}
+                />
+                <Route
+                  path="/community/read/:postId"
+                  exact
+                  component={CommunityDetail}
+                />
+                <Route path="/community/:page" exact component={Community} />
+                <Redirect from="/community/*" to="/community/1" />
                 <Route path="/ticket" exact component={Ticket} />
                 <Route path="/goods" exact component={Goods} />
                 <Route path="/search/:term" exact component={Search} />

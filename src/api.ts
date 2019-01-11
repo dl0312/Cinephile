@@ -17,7 +17,7 @@ export const moviesApi = {
   detail: (id: number) =>
     api.get(`movie/${id}`, {
       params: {
-        append_to_response: "videos"
+        append_to_response: "image,videos"
       }
     }),
   credit: (id: number) => api.get(`movie/${id}/credits`),
@@ -29,7 +29,14 @@ export const moviesApi = {
         region: "KR",
         page
       }
-    })
+    }),
+  person: (id: number) =>
+    api.get(`person/${id}`, {
+      params: {
+        append_to_response: "image,videos"
+      }
+    }),
+  filmograpy: (id: number) => api.get(`person/${id}/movie_credits`)
 };
 
 // export const tvApi = {

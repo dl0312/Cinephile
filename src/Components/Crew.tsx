@@ -69,10 +69,10 @@ interface IProps {
 export default class Crew extends React.Component<IProps> {
   render() {
     const {
-      people: { credit_id, department, job, name, profile_path }
+      people: { id, department, job, name, profile_path }
     } = this.props;
     return (
-      <Link to={`/credit/${credit_id}`}>
+      <Link to={`/person/${id}`}>
         <Container>
           {profile_path ? (
             <ProfileImage

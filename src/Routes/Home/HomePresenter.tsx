@@ -51,7 +51,7 @@ interface IProps {}
 export const HomePresenter: React.SFC<IProps> = ({}) => (
   <>
     <Helmet>
-      <title>Film | Betterboxd</title>
+      <title>Home | Cinephile</title>
     </Helmet>
     <Container>
       <Backdrop

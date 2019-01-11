@@ -68,10 +68,11 @@ interface IProps {
 export default class Actor extends React.Component<IProps> {
   render() {
     const {
-      people: { credit_id, character, name, profile_path }
+      people: { id, character, name, profile_path }
     } = this.props;
+    console.log(this.props);
     return (
-      <Link to={`/credit/${credit_id}`}>
+      <Link to={`/person/${id}`}>
         <Container>
           {profile_path ? (
             <ProfileImage

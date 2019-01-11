@@ -171,8 +171,8 @@ class Header extends React.Component<IProps, IState> {
                           <CustomHeaderContainer>
                             <HeaderProfile user={user} />
                           </CustomHeaderContainer>
-                          <Item current={pathname === "/community"}>
-                            <SLink to="/community">영화수다</SLink>
+                          <Item current={pathname === `/community`}>
+                            <SLink to="/community/1/">영화수다</SLink>
                           </Item>
                           <Item current={pathname === "/ticket"}>
                             <SLink to="/ticket">표나누기</SLink>
@@ -199,8 +199,8 @@ class Header extends React.Component<IProps, IState> {
                 <Item current={pathname === "/register"}>
                   <SLink to="/register">회원가입</SLink>
                 </Item>
-                <Item current={pathname === "/community"}>
-                  <SLink to="/community">영화수다</SLink>
+                <Item current={pathname === "/community/1/"}>
+                  <SLink to="/community/1/">영화수다</SLink>
                 </Item>
                 <Item current={pathname === "/ticket"}>
                   <SLink to="/ticket">표나누기</SLink>

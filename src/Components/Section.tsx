@@ -15,9 +15,14 @@ const Title = styled.span`
   font-weight: 600;
 `;
 
-const Grid = styled.div`
+interface IGridProps {
+  loading: boolean;
+}
+
+const Grid = styled("div")<IGridProps>`
   margin-top: 1.5rem;
   display: grid;
+  transition: 0.5s ease-in-out;
   grid-template-columns: repeat(auto-fill, 8rem);
   grid-gap: 1.5rem;
 `;
@@ -53,6 +58,7 @@ interface IProps {
   title: string;
   getAPI: any;
   term?: string;
+  id?: string;
 }
 
 interface IState {
@@ -69,27 +75,37 @@ export default class Section extends React.Component<IProps, IState> {
       movies: null,
       page: 1,
       error: null,
-      loading: false
+      loading: true
     };
   }
 
   async componentDidMount() {
-    const { getAPI, term } = this.props;
+    const { getAPI, term, id } = this.props;
     try {
       console.log(this.props);
-      if (term === undefined) {
+      if (term !== undefined) {
         const {
           data: { results: movies }
-        } = await getAPI(this.state.page);
+        } = await getAPI(term, this.state.page);
         this.setState({
           movies,
+          page: this.state.page + 1,
+          loading: true
+        });
+      } else if (id !== undefined) {
+        const {
+          data: { cast, crew }
+        } = await getAPI(id);
+        console.log(cast, crew);
+        this.setState({
+          movies: cast.concat(crew),
           page: this.state.page + 1,
           loading: true
         });
       } else {
         const {
           data: { results: movies }
-        } = await getAPI(term, this.state.page);
+        } = await getAPI(this.state.page);
         this.setState({
           movies,
           page: this.state.page + 1,
@@ -110,13 +126,22 @@ export default class Section extends React.Component<IProps, IState> {
   async componentDidUpdate(prevProps: any) {
     console.log(this.props, prevProps);
     if (this.props.term !== prevProps.term) {
-      const { getAPI, term } = this.props;
+      const { getAPI, term, id } = this.props;
       // const { page } = this.state;
       try {
-        if (term === undefined) {
+        if (term !== undefined) {
           const {
             data: { results: movies }
-          } = await getAPI(1);
+          } = await getAPI(term, 1);
+          this.setState({
+            movies,
+            page: 2,
+            loading: true
+          });
+        } else if (id !== undefined) {
+          const {
+            data: { results: movies }
+          } = await getAPI(id);
           this.setState({
             movies,
             page: 2,
@@ -125,7 +150,7 @@ export default class Section extends React.Component<IProps, IState> {
         } else {
           const {
             data: { results: movies }
-          } = await getAPI(term, 1);
+          } = await getAPI(1);
           this.setState({
             movies,
             page: 2,
@@ -180,16 +205,16 @@ export default class Section extends React.Component<IProps, IState> {
 
   render() {
     const { title } = this.props;
-    const { movies } = this.state;
-    console.log(this.props);
+    const { movies, loading } = this.state;
+    console.log(this.state.movies);
     return (
       <Container>
         <Title>{title}</Title>
-        <Grid>
+        <Grid loading={loading}>
           {movies &&
-            movies.map((movie: any) => (
+            movies.map((movie: any, index: number) => (
               <Poster
-                key={movie.id}
+                key={index}
                 title={movie.title}
                 id={movie.id}
                 imageUrl={movie.poster_path}
@@ -198,7 +223,11 @@ export default class Section extends React.Component<IProps, IState> {
               />
             ))}
           <More onClick={() => this.handleOnClickMore()}>
-            <MoreIcon className="fas fa-plus" />
+            {!loading ? (
+              <MoreIcon className="fas fa-plus" />
+            ) : (
+              <MoreIcon className="fas fa-spinner" />
+            )}
             <span>더 보기</span>
           </More>
         </Grid>

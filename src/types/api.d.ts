@@ -132,6 +132,130 @@ export interface getMyProfile {
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL query operation: getPostById
+// ====================================================
+
+export interface getPostById_GetPostById_post {
+  __typename: "Post";
+  id: number;
+  category: number;
+  title: string;
+  source: string;
+  tags: (string | null)[] | null;
+  body: string;
+}
+
+export interface getPostById_GetPostById {
+  __typename: "GetPostByIdResponse";
+  ok: boolean;
+  error: string | null;
+  post: getPostById_GetPostById_post | null;
+}
+
+export interface getPostById {
+  GetPostById: getPostById_GetPostById;
+}
+
+export interface getPostByIdVariables {
+  postId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getPostsByPage
+// ====================================================
+
+export interface getPostsByPage_GetPostsByPage_posts_user {
+  __typename: "User";
+  id: number;
+  nickName: string;
+  profilePhoto: string | null;
+}
+
+export interface getPostsByPage_GetPostsByPage_posts {
+  __typename: "Post";
+  id: number;
+  user: getPostsByPage_GetPostsByPage_posts_user;
+  category: number;
+  title: string;
+  tags: (string | null)[] | null;
+  createdAt: string;
+}
+
+export interface getPostsByPage_GetPostsByPage {
+  __typename: "GetPostsByPageResponse";
+  ok: boolean;
+  error: string | null;
+  posts: (getPostsByPage_GetPostsByPage_posts | null)[];
+  maxPage: number;
+}
+
+export interface getPostsByPage {
+  GetPostsByPage: getPostsByPage_GetPostsByPage;
+}
+
+export interface getPostsByPageVariables {
+  page: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: editPost
+// ====================================================
+
+export interface editPost_EditPost {
+  __typename: "EditPostResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface editPost {
+  EditPost: editPost_EditPost;
+}
+
+export interface editPostVariables {
+  postId: number;
+  category: number;
+  title: string;
+  source?: string | null;
+  tags?: (string | null)[] | null;
+  body: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: addPost
+// ====================================================
+
+export interface addPost_AddPost {
+  __typename: "AddPostResponse";
+  ok: boolean;
+  error: string | null;
+  postId: number | null;
+}
+
+export interface addPost {
+  AddPost: addPost_AddPost;
+}
+
+export interface addPostVariables {
+  category: number;
+  title: string;
+  source?: string | null;
+  tags?: (string | null)[] | null;
+  body: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
 //==============================================================
 // START Enums and Input Objects
 //==============================================================

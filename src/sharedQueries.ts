@@ -95,3 +95,87 @@ export const GET_MY_PROFILE_QUERY = gql`
     }
   }
 `;
+
+export const GET_POST_BY_ID = gql`
+  query getPostById($postId: Int!) {
+    GetPostById(postId: $postId) {
+      ok
+      error
+      post {
+        id
+        category
+        title
+        source
+        tags
+        body
+      }
+    }
+  }
+`;
+
+export const GET_POSTS_BY_PAGE = gql`
+  query getPostsByPage($page: Int!) {
+    GetPostsByPage(page: $page) {
+      ok
+      error
+      posts {
+        id
+        user {
+          id
+          nickName
+          profilePhoto
+        }
+        category
+        title
+        tags
+        createdAt
+      }
+      maxPage
+    }
+  }
+`;
+
+export const EDIT_POST = gql`
+  mutation editPost(
+    $postId: Int!
+    $category: Int!
+    $title: String!
+    $source: String
+    $tags: [String]
+    $body: String!
+  ) {
+    EditPost(
+      postId: $postId
+      category: $category
+      title: $title
+      source: $source
+      tags: $tags
+      body: $body
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
+export const ADD_POST = gql`
+  mutation addPost(
+    $category: Int!
+    $title: String!
+    $source: String
+    $tags: [String]
+    $body: String!
+  ) {
+    AddPost(
+      category: $category
+      title: $title
+      source: $source
+      tags: $tags
+      body: $body
+    ) {
+      ok
+      error
+      postId
+    }
+  }
+`;

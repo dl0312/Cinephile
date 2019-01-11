@@ -12,7 +12,6 @@ interface IProps {
 
 class App extends React.Component<IProps, any> {
   render() {
-    console.log(this.props);
     const {
       data: {
         auth: { isLoggedIn }
