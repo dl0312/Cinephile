@@ -124,7 +124,6 @@ export default class Section extends React.Component<IProps, IState> {
   }
 
   async componentDidUpdate(prevProps: any) {
-    console.log(this.props, prevProps);
     if (this.props.term !== prevProps.term) {
       const { getAPI, term, id } = this.props;
       // const { page } = this.state;
@@ -206,7 +205,6 @@ export default class Section extends React.Component<IProps, IState> {
   render() {
     const { title } = this.props;
     const { movies, loading } = this.state;
-    console.log(this.state.movies);
     return (
       <Container>
         <Title>{title}</Title>

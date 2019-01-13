@@ -7,6 +7,9 @@ import NoImage from "../../asset/popcorn.png";
 import { Link } from "react-router-dom";
 import { Rate } from "antd";
 import Credit from "../../Components/Credit";
+import ReactCountryFlag from "react-country-flag";
+import GenreEmoji from "../../Components/GenreEmoji";
+const numeral = require("numeral");
 
 const Container = styled.div`
   width: 100%;
@@ -19,7 +22,7 @@ interface IBackdropProps {
 
 const Backdrop = styled("div")<IBackdropProps>`
   position: absolute;
-  top: -8rem;
+  top: -6rem;
   left: 0;
   width: 1200px;
   height: 675px;
@@ -183,7 +186,7 @@ const Title = styled.div`
   margin: 0 0 0.6rem;
   color: #fff;
   line-height: 1.2;
-  text-shadow: 0px 5px 5px #0a0e27;
+  text-shadow: 2px 2px 1px #0a0e27;
 `;
 
 const Subtitle = styled.div`
@@ -203,6 +206,22 @@ const Subtitle = styled.div`
 const SideInfoSection = styled.div`
   padding-bottom: 3rem;
   float: left;
+`;
+
+const Quote = styled.i`
+  font-size: 0.8rem;
+`;
+
+const Tagline = styled.div`
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.5625;
+  margin-bottom: 0.625em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: pre-wrap;
+  text-shadow: 0px 5px 5px #0a0e27;
 `;
 
 const Overview = styled.div`
@@ -294,6 +313,12 @@ const Share = styled.div`
   justify-content: center;
 `;
 
+const SLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 interface IProps {
   result: any;
   cast: any;
@@ -340,6 +365,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
       <Content>
         <MediaInfo>
           <Cover
+            title={result.title}
             src={
               result.poster_path
                 ? `https://image.tmdb.org/t/p/original${result.poster_path}`
@@ -347,41 +373,47 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
             }
           />
           <FilmStats>
-            <FilmStat>
-              <Link to={`/movie/${result.id}/members/`}>
-                <FilmStatIcon
-                  style={{ color: "chartreuse " }}
-                  className="fas fa-eye"
-                />
-                <FilmStatText>54K</FilmStatText>
-              </Link>
-            </FilmStat>
-            <FilmStat>
+            {result.budget !== 0 && (
+              <FilmStat title="흥행도">
+                <SLink to={`/movie/${result.id}/members/`}>
+                  <FilmStatIcon
+                    style={{ color: "#e74c3c" }}
+                    className="fas fa-burn"
+                  />
+                  <FilmStatText>
+                    {Math.round((result.revenue / result.budget) * 100)}%
+                  </FilmStatText>
+                </SLink>
+              </FilmStat>
+            )}
+            {/* <FilmStat>
               <Link to={`/film/${result.id}/lists/by/popular/`}>
                 <FilmStatIcon
                   style={{ color: "skyblue" }}
                   className="fas fa-th-list"
                 />
-                <FilmStatText>24K</FilmStatText>
+                <FilmStatText>{result.revenue}</FilmStatText>
               </Link>
-            </FilmStat>
-            <FilmStat>
-              <Link to={`/film/${result.id}/likes/`}>
+            </FilmStat> */}
+            <FilmStat title="인기도">
+              <SLink to={`/film/${result.id}/likes/`}>
                 <FilmStatIcon
                   style={{ color: "orange" }}
                   className="fas fa-heart"
                 />
-                <FilmStatText>28K</FilmStatText>
-              </Link>
+                <FilmStatText>
+                  {numeral(result.popularity).format("0 a")}
+                </FilmStatText>
+              </SLink>
             </FilmStat>
-            <FilmStat>
-              <Link to={`/best`}>
+            <FilmStat title="평점">
+              <SLink to={`/best`}>
                 <FilmStatIcon
                   style={{ color: "yellow" }}
-                  className="fas fa-crown"
+                  className="fas fa-star"
                 />
-                <FilmStatText>6</FilmStatText>
-              </Link>
+                <FilmStatText>{result.vote_average}</FilmStatText>
+              </SLink>
             </FilmStat>
           </FilmStats>
           <Watch>
@@ -416,15 +448,34 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
                       ? `https://www.youtube.com/watch?v=${video.key}`
                       : "/"
                   }
+                  key={index}
                 >
                   <TrailerIcon className="fas fa-play-circle" />
                   <TrailerText>
                     {video.type === "Trailer"
-                      ? `${result.title} 예고편`
+                      ? `${result.title}`
                       : "무슨영상일까~~~요?"}
                   </TrailerText>
                 </a>
               ))}
+              <a
+                target="_blank"
+                href={`https://www.imdb.com/title/${result.imdb_id}`}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: "0.3rem 0"
+                }}
+              >
+                <img
+                  src={
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/800px-IMDB_Logo_2016.svg.png"
+                  }
+                  style={{ width: "2rem", marginRight: "0.4rem" }}
+                />{" "}
+                {`${result.title} IMDb`}
+              </a>
             </WatchPanel>
             <MoreService>
               <Link to={"/"}>
@@ -465,50 +516,40 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
           <TitleSection>
             <Title>{result.title}</Title>
             <Subtitle>
-              <Link
-                style={{ textDecoration: "underline" }}
-                to={`/movies/year/${result.release_date.substring(0, 4)}`}
-              >
+              <Link to={`/movies/year/${result.release_date.substring(0, 4)}`}>
                 {result.release_date.substring(0, 4)}
               </Link>
+              /{result.release_date.substring(5, 7)}/
+              {result.release_date.substring(8)}
               <Divider>•</Divider>
               {result.genres.map((genre: any, index: number) => {
                 return (
-                  <>
-                    <Link
-                      style={{
-                        textDecoration: "underline"
-                      }}
-                      to={`/genre/${genre.id}`}
-                    >
-                      {genre.name}
+                  <React.Fragment key={genre.id}>
+                    <Link style={{}} to={`/genre/${genre.id}`}>
+                      <GenreEmoji genre={genre.name} />
                     </Link>
                     {result.genres.length - 1 !== index && <span>, </span>}
-                  </>
+                  </React.Fragment>
                 );
               })}
               <Divider>•</Divider>
               {result.production_countries.map(
                 (country: any, index: number) => (
-                  <>
-                    <Link
-                      style={{
-                        textDecoration: "underline"
-                      }}
-                      to={`/country/${country.id}`}
-                    >
-                      {country.name}
+                  <React.Fragment key={country.iso_3166_1}>
+                    <Link style={{}} to={`/country/${country.iso_3166_1}`}>
+                      <ReactCountryFlag code={country.iso_3166_1} svg />
                     </Link>
                     {result.production_countries.length - 1 !== index && (
                       <span>, </span>
                     )}
-                  </>
+                  </React.Fragment>
                 )
               )}
               <Divider>•</Divider>
               {`${Math.floor(result.runtime / 60)}시간 ${result.runtime %
                 60}분`}
-              <Divider>•</Divider>Directed by
+              {/* <Divider>•</Divider>
+              감독
               {directors.map((director: any, index: number) => {
                 console.log(director, index);
                 return (
@@ -525,11 +566,18 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
                     {directors.length - 1 !== index && <span>,</span>}
                   </>
                 );
-              })}
+              })} */}
             </Subtitle>
           </TitleSection>
           <SideInfoSection>
-            <Overview>{result.overview}</Overview>
+            {result.tagline && (
+              <Tagline>
+                <Quote className="fas fa-quote-left" />
+                <span style={{ margin: "0 1rem" }}>{result.tagline}</span>
+                <Quote className="fas fa-quote-right" />
+              </Tagline>
+            )}
+            {result.overview && <Overview>{result.overview}</Overview>}
             <Credit
               creditIndex={creditIndex}
               result={result}

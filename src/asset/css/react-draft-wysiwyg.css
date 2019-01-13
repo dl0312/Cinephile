@@ -107,7 +107,7 @@
   flex-wrap: wrap;
   margin-right: 4px;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  background-color: white;
 }
 .rdw-inline-dropdown {
   width: 50px;

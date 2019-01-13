@@ -42,26 +42,26 @@ const Item = styled("li")<IItemProps>`
   }
 `;
 
-const CastInfoContainer = styled.div`
+interface ICastInfoContainerProps {
+  isFullData?: boolean;
+}
+
+const CastInfoContainer = styled("div")<ICastInfoContainerProps>`
+  height: ${props => (props.isFullData ? "100%" : "27.5rem")};
   margin-bottom: 1rem;
   font-family: "Thasadith", sans-serif;
   color: #cde;
   font-size: 0.9rem;
   width: 42rem;
+  transition: 10s ease-in-out;
   overflow: hidden;
 `;
 
-interface ICreditInfoProps {
-  castPage: number;
-}
-
-const CastInfo = styled("div")<ICreditInfoProps>`
-  height: 20rem;
-  flex-flow: column wrap;
+const CastInfo = styled.div`
+  flex-flow: row wrap;
   display: flex;
   align-content: flex-start;
   transition: 1s ease;
-  transform: translateX(-${props => props.castPage * 42}rem);
 `;
 
 // const CrewContainer = styled.div`
@@ -79,6 +79,9 @@ const CrewInfo = styled.div`
 `;
 
 const Department = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
   margin-bottom: 1rem;
   font-family: "Thasadith", sans-serif;
 `;
@@ -125,16 +128,46 @@ const DetailItemText = styled.div`
   font-family: "Thasadith", sans-serif;
 `;
 
-const ArrowIcon = styled.i`
+const More = styled.div`
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.5rem;
-  opacity: 0.2;
-  transition: 0.5s ease-in-out;
+  z-index: 1;
+  bottom: 0;
+  padding-top: 3rem;
+  width: 100%;
+  text-align: center;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(20, 24, 28, 1),
+    rgba(20, 24, 28, 1)
+  );
+`;
+
+const MoreIcon = styled.i`
   cursor: pointer;
+  font-size: 2rem;
+  @keyframes floating {
+    0% {
+      transform: 0;
+    }
+    40% {
+      transform: translateY(0.5rem);
+    }
+    60% {
+      transform: 0;
+    }
+    80% {
+      transform: translateY(0.5rem);
+    }
+    100% {
+      transform: 0;
+    }
+  }
   &:hover {
-    opacity: 1;
+    animation-name: floating;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
   }
 `;
 
@@ -154,14 +187,16 @@ interface IProps {
 }
 
 interface IState {
-  castPage: number;
+  castMore: boolean;
+  crewMore: boolean;
 }
 
 export default class Credit extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      castPage: 0
+      castMore: false,
+      crewMore: false
     };
   }
   render() {
@@ -179,33 +214,10 @@ export default class Credit extends React.Component<IProps, IState> {
       costumes,
       handleCreditIndexChange
     } = this.props;
-    const { castPage } = this.state;
-    const maxPage = Math.floor(cast.length / 5);
+    const { castMore, crewMore } = this.state;
     console.log(this.props);
     return (
       <Container>
-        {creditIndex === 0 && (
-          <ArrowIcon
-            style={{ left: "-2rem" }}
-            onClick={() => {
-              if (castPage === 0) {
-                this.setState({ castPage: maxPage });
-              } else this.setState({ castPage: castPage - 1 });
-            }}
-            className="fas fa-chevron-circle-left"
-          />
-        )}
-        {creditIndex === 0 && (
-          <ArrowIcon
-            style={{ right: "-2rem" }}
-            onClick={() => {
-              if (castPage === maxPage) {
-                this.setState({ castPage: 0 });
-              } else this.setState({ castPage: castPage + 1 });
-            }}
-            className="fas fa-chevron-circle-right"
-          />
-        )}
         <Header>
           <List>
             <Item
@@ -235,80 +247,112 @@ export default class Credit extends React.Component<IProps, IState> {
           </List>
         </Header>
         {creditIndex === 0 && (
-          <CastInfoContainer>
-            <CastInfo castPage={castPage}>
+          <CastInfoContainer isFullData={castMore}>
+            {!castMore && (
+              <More>
+                <MoreIcon
+                  onClick={() => this.setState({ castMore: true })}
+                  className="fas fa-caret-down"
+                />
+              </More>
+            )}
+            <CastInfo>
               {cast.map((people: any, index: number) => (
-                <Actor key={people.id} people={people} />
+                <Actor key={index} people={people} />
               ))}
             </CastInfo>
           </CastInfoContainer>
         )}
         {creditIndex === 1 && (
-          <CastInfoContainer>
+          <CastInfoContainer isFullData={crewMore}>
+            {!crewMore && (
+              <More>
+                <MoreIcon
+                  onClick={() => this.setState({ crewMore: true })}
+                  className="fas fa-caret-down"
+                />
+              </More>
+            )}
             <CrewInfo>
               {directors.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>감독</DepartmentText>
-                  {directors.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {directors.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {producers.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>제작</DepartmentText>
-                  {producers.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {producers.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {writers.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>각본</DepartmentText>
-                  {writers.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {writers.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {editors.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>편집</DepartmentText>
-                  {editors.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {editors.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {cinematographies.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>촬영</DepartmentText>
-                  {cinematographies.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {cinematographies.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {productionDesigns.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>프로덕션 디자인</DepartmentText>
-                  {productionDesigns.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {productionDesigns.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {composers.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>음악</DepartmentText>
-                  {composers.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {composers.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
               {costumes.length !== 0 && (
-                <Department>
+                <>
                   <DepartmentText>의상</DepartmentText>
-                  {costumes.map((people: any, index: number) => (
-                    <Crew key={people.id} people={people} />
-                  ))}
-                </Department>
+                  <Department>
+                    {costumes.map((people: any, index: number) => (
+                      <Crew key={index} people={people} />
+                    ))}
+                  </Department>
+                </>
               )}
             </CrewInfo>
           </CastInfoContainer>

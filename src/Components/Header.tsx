@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
-import Logo from "../asset/logo.png";
+// import Logo from "../asset/logo.png";
 import { getMyProfile } from "../types/api";
 import { Query } from "react-apollo";
 import { toast } from "react-toastify";
@@ -15,13 +15,18 @@ interface IGradientBackgroundProps {
 
 const GradientBackground = styled("div")<IGradientBackgroundProps>`
   top: 0;
-  bottom: -2rem;
+  bottom: -1rem;
   left: 0;
   right: 0;
   position: absolute;
-  z-index: 1;
-  opacity: ${props => (props.darken ? "1" : "0.5")};
-  background: linear-gradient(to bottom, rgba(20, 20, 20, 1), transparent);
+  z-index: 0;
+  opacity: ${props => (props.darken ? "0.95" : "0.5")};
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 1),
+    rgba(20, 20, 20, 0.7),
+    transparent
+  );
   transition: 1s ease-in-out;
 `;
 
@@ -40,7 +45,7 @@ const Container = styled.header`
   justify-content: center;
   &:hover {
     ${GradientBackground} {
-      opacity: 1;
+      opacity: 0.95;
     }
   }
 `;
@@ -60,10 +65,20 @@ const NavList = styled.ul`
   justify-content: center;
 `;
 
-const LogoImage = styled.img`
-  height: 3rem;
+// const LogoImage = styled.img`
+//   height: 3rem;
+//   position: relative;
+//   z-index: 2;
+// `;
+
+const LogoText = styled.div`
+  all: unset;
+  font-size: 2.5rem;
   position: relative;
   z-index: 2;
+  font-style: italic;
+  font-family: "Playfair Display", serif;
+  text-shadow: 0px 5px 5px #0a0e27;
 `;
 
 const CustomHeaderContainer = styled.div`
@@ -99,6 +114,12 @@ const SLink = styled(Link)`
   z-index: 2;
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
   /* letter-spacing: 0.5rem; */
+`;
+
+const PlainLink = styled(Link)`
+  &:hover {
+    color: white;
+  }
 `;
 
 class GetMyProfileQuery extends Query<getMyProfile> {}
@@ -146,9 +167,17 @@ class Header extends React.Component<IProps, IState> {
       <Container>
         <GradientBackground darken={darken} />
         <List>
-          <Link to={"/"}>
-            <LogoImage src={Logo} />
-          </Link>
+          <PlainLink to={"/"}>
+            {/* <LogoImage src={Logo} /> */}
+            <LogoText>
+              <span style={{ color: "#e74c3c", fontWeight: "bolder" }}>C</span>
+              in
+              <span style={{ color: "#f1c40f", fontWeight: "bolder" }}>e</span>
+              <span style={{ color: "#2ecc71", fontWeight: "bolder" }}>p</span>
+              hil
+              <span style={{ color: "#3498db", fontWeight: "bolder" }}>e</span>
+            </LogoText>
+          </PlainLink>
           <NavList>
             {isLoggedIn ? (
               <GetMyProfileQuery

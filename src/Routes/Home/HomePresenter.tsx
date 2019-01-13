@@ -3,9 +3,11 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import Section from "../../Components/Section";
 import { moviesApi } from "../../api";
+import { Carousel } from "antd";
+import { Loader } from "../../Components/Loader";
 
 const Container = styled.div`
-  margin: 30rem 0;
+  margin: 30rem 0 10rem 0;
 `;
 
 interface IBackdropProps {
@@ -13,13 +15,8 @@ interface IBackdropProps {
 }
 
 const Backdrop = styled("div")<IBackdropProps>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1200px;
-  height: 675px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 1210px !important;
+  height: 685px;
   background-image: linear-gradient(
       to right,
       rgba(20, 24, 28, 1),
@@ -38,7 +35,6 @@ const Backdrop = styled("div")<IBackdropProps>`
     url(${props => props.bgImage});
   background-position: center center;
   background-size: cover;
-  z-index: 0;
 `;
 
 const SectionContainer = styled.div`
@@ -46,22 +42,40 @@ const SectionContainer = styled.div`
   margin: 0 auto;
 `;
 
-interface IProps {}
+interface IProps {
+  movies: any;
+  error: string | null;
+  loading: boolean;
+}
 
-export const HomePresenter: React.SFC<IProps> = ({}) => (
-  <>
-    <Helmet>
-      <title>Home | Cinephile</title>
-    </Helmet>
-    <Container>
-      <Backdrop
+export const HomePresenter: React.SFC<IProps> = ({ movies, error, loading }) =>
+  loading ? (
+    <Loader />
+  ) : (
+    <>
+      <Helmet>
+        <title>Home | Cinephile</title>
+      </Helmet>
+      <Container>
+        <Carousel effect="fade" vertical>
+          {movies &&
+            movies.map((movie: any, index: number) => (
+              <Backdrop
+                key={movie.id}
+                bgImage={`https://image.tmdb.org/t/p/original${
+                  movie.backdrop_path
+                }`}
+              />
+            ))}
+        </Carousel>
+        {/* <Backdrop
         bgImage={`https://image.tmdb.org/t/p/original/nadTlnTE6DdgmYsN4iWc2a2wiaI.jpg`}
-      />
-      <SectionContainer>
-        <Section title="현재 상영중" getAPI={moviesApi.nowPlaying} />
-        <Section title="인기 작품" getAPI={moviesApi.popular} />
-        <Section title="개봉 예정작" getAPI={moviesApi.upcoming} />
-      </SectionContainer>
-    </Container>
-  </>
-);
+      /> */}
+        <SectionContainer>
+          <Section title="현재 상영중" getAPI={moviesApi.nowPlaying} />
+          <Section title="인기 작품" getAPI={moviesApi.popular} />
+          <Section title="개봉 예정작" getAPI={moviesApi.upcoming} />
+        </SectionContainer>
+      </Container>
+    </>
+  );
