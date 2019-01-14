@@ -186,7 +186,7 @@ const Title = styled.div`
   margin: 0 0 0.6rem;
   color: #fff;
   line-height: 1.2;
-  text-shadow: 2px 2px 1px #0a0e27;
+  text-shadow: 0px 3px 5px #0a0e27;
 `;
 
 const Subtitle = styled.div`
@@ -195,7 +195,7 @@ const Subtitle = styled.div`
   font-size: 17px;
   line-height: 1.6;
   color: #9ab;
-  text-shadow: #000 2px 0 5px;
+  text-shadow: #000 0px 2px 5px;
   margin: 0;
   white-space: pre-wrap;
   font-family: "Nanum Myeongjo", serif;
@@ -320,6 +320,7 @@ const SLink = styled(Link)`
 `;
 
 interface IProps {
+  id: number;
   result: any;
   cast: any;
   directors: any;
@@ -337,6 +338,7 @@ interface IProps {
 }
 
 export const MovieDetailPresenter: React.SFC<IProps> = ({
+  id,
   result,
   cast,
   directors,
@@ -453,7 +455,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
                   <TrailerIcon className="fas fa-play-circle" />
                   <TrailerText>
                     {video.type === "Trailer"
-                      ? `${result.title}`
+                      ? `${result.title} 예고편`
                       : "무슨영상일까~~~요?"}
                   </TrailerText>
                 </a>
@@ -579,6 +581,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
             )}
             {result.overview && <Overview>{result.overview}</Overview>}
             <Credit
+              id={id}
               creditIndex={creditIndex}
               result={result}
               cast={cast}

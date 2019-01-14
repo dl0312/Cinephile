@@ -15,6 +15,8 @@ interface IProps {
 
 interface IState {
   result: any;
+  recommendation: any;
+  similar: any;
   cast: any;
   directors: any;
   producers: any;
@@ -37,6 +39,8 @@ export default class MovieDetailContainer extends React.Component<
     super(props);
     this.state = {
       result: null,
+      recommendation: null,
+      similar: null,
       cast: null,
       directors: null,
       producers: null,
@@ -119,11 +123,86 @@ export default class MovieDetailContainer extends React.Component<
     }
   }
 
+  async componentDidUpdate(prevProps: any) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      try {
+        const {
+          match: {
+            params: { id }
+          },
+          history: { push }
+        } = this.props;
+        const parsedId = parseInt(id);
+        if (isNaN(parsedId)) {
+          return push("/");
+        }
+        try {
+          const { data: result } = await moviesApi.detail(parsedId);
+          const { data: credit } = await moviesApi.credit(parsedId);
+          const { cast } = credit;
+          const { crew } = credit;
+          const directors = crew.filter(
+            (people: any) => people.department === "Directing"
+          );
+          const producers = crew.filter(
+            (people: any) => people.department === "Production"
+          );
+          const writers = crew.filter(
+            (people: any) => people.department === "Writing"
+          );
+          const editors = crew.filter(
+            (people: any) => people.department === "Editing"
+          );
+          const cinematographies = crew.filter(
+            (people: any) => people.department === "Camera"
+          );
+          const productionDesigns = crew.filter(
+            (people: any) => people.department === "Art"
+          );
+          const composers = crew.filter(
+            (people: any) => people.department === "Sound"
+          );
+          const costumes = crew.filter(
+            (people: any) => people.department === "Costume & Make-Up"
+          );
+          this.setState({
+            result,
+            cast,
+            directors,
+            producers,
+            writers,
+            editors,
+            cinematographies,
+            productionDesigns,
+            composers,
+            costumes,
+            loading: true
+          });
+        } catch (error) {
+          this.setState({ error: error.message });
+        } finally {
+          this.setState({ loading: false });
+        }
+        this.setState({ loading: true });
+      } catch (error) {
+        this.setState({ error: error.message });
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
+  }
+
   handleCreditIndexChange = (creditIndex: number) => {
     this.setState({ creditIndex });
   };
 
   render() {
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
+    const parsedId = parseInt(id);
     const {
       result,
       cast,
@@ -142,6 +221,7 @@ export default class MovieDetailContainer extends React.Component<
     console.log(this.state.result);
     return (
       <MovieDetailPresenter
+        id={parsedId}
         result={result}
         cast={cast}
         directors={directors}

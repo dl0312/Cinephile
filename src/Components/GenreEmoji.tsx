@@ -64,6 +64,12 @@ const GenreEmoji: React.SFC<IProps> = ({ genre }) => {
     case "역사":
       emoji = "📚";
       break;
+    case "서부":
+      emoji = "🌵";
+      break;
+    case "TV 영화":
+      emoji = "📽️";
+      break;
     default:
       break;
   }

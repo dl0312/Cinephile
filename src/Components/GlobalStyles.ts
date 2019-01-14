@@ -14,7 +14,7 @@ const globalStyles = createGlobalStyle`
         color: white;
         text-decoration: none !important;
 
-&:hover{
+        &:hover{
             color: MediumTurquoise;
         }
     }

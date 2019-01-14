@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { moviesApi } from "../../api";
-import Section from "../../Components/Section";
+import FilmoSection from "../../Components/FilmoSection";
 import { Loader } from "../../Components/Loader";
 
 const Container = styled.div`
@@ -24,6 +24,7 @@ const Profile = styled("div")<IProfileProps>`
   width: 10rem;
   height: 10rem;
   margin-bottom: 2rem;
+  box-shadow: 0px 10px 5px black;
 `;
 
 const Name = styled.div`
@@ -31,8 +32,8 @@ const Name = styled.div`
   font-weight: 900;
   font-family: "Thasadith", sans-serif;
   border: 2px solid white;
-  border-radius: 25px;
-  padding: 0.5rem;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
   margin-bottom: 2rem;
 `;
 
@@ -62,7 +63,7 @@ const PersonDetailPresenter: React.SFC<IProps> = ({
       <Profile url={`https://image.tmdb.org/t/p/w500${person.profile_path}`} />
       <Name>{person.name}</Name>
       <SectionContainer>
-        <Section title="필모그래피" id={id} getAPI={moviesApi.filmograpy} />
+        <FilmoSection id={id} getAPI={moviesApi.filmograpy} />
       </SectionContainer>
     </Container>
   );

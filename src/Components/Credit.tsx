@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Actor from "./Actor";
 import Crew from "./Crew";
 import Company from "./Company";
+import Section from "./Section";
+import { moviesApi } from "../api";
 
 const Container = styled.div`
   position: relative;
@@ -47,14 +49,13 @@ interface ICastInfoContainerProps {
 }
 
 const CastInfoContainer = styled("div")<ICastInfoContainerProps>`
-  height: ${props => (props.isFullData ? "100%" : "27.5rem")};
+  height: "100%";
   margin-bottom: 1rem;
   font-family: "Thasadith", sans-serif;
   color: #cde;
   font-size: 0.9rem;
   width: 42rem;
-  transition: 10s ease-in-out;
-  overflow: hidden;
+  transition: 1s ease-in-out;
 `;
 
 const CastInfo = styled.div`
@@ -128,50 +129,8 @@ const DetailItemText = styled.div`
   font-family: "Thasadith", sans-serif;
 `;
 
-const More = styled.div`
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
-  padding-top: 3rem;
-  width: 100%;
-  text-align: center;
-  background-image: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(20, 24, 28, 1),
-    rgba(20, 24, 28, 1)
-  );
-`;
-
-const MoreIcon = styled.i`
-  cursor: pointer;
-  font-size: 2rem;
-  @keyframes floating {
-    0% {
-      transform: 0;
-    }
-    40% {
-      transform: translateY(0.5rem);
-    }
-    60% {
-      transform: 0;
-    }
-    80% {
-      transform: translateY(0.5rem);
-    }
-    100% {
-      transform: 0;
-    }
-  }
-  &:hover {
-    animation-name: floating;
-    animation-duration: 0.5s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-  }
-`;
-
 interface IProps {
+  id: number;
   creditIndex: number;
   result: any;
   cast: any;
@@ -201,6 +160,7 @@ export default class Credit extends React.Component<IProps, IState> {
   }
   render() {
     const {
+      id,
       creditIndex,
       result,
       cast,
@@ -238,24 +198,22 @@ export default class Credit extends React.Component<IProps, IState> {
             >
               세부사항
             </Item>
-            {/* <Item
+            <Item
               onClick={() => handleCreditIndexChange(3)}
               selected={creditIndex === 3}
             >
-              장르
-            </Item> */}
+              같이 보면 좋은 영화
+            </Item>
+            <Item
+              onClick={() => handleCreditIndexChange(4)}
+              selected={creditIndex === 4}
+            >
+              비슷한 영화
+            </Item>
           </List>
         </Header>
         {creditIndex === 0 && (
           <CastInfoContainer isFullData={castMore}>
-            {!castMore && (
-              <More>
-                <MoreIcon
-                  onClick={() => this.setState({ castMore: true })}
-                  className="fas fa-caret-down"
-                />
-              </More>
-            )}
             <CastInfo>
               {cast.map((people: any, index: number) => (
                 <Actor key={index} people={people} />
@@ -265,14 +223,6 @@ export default class Credit extends React.Component<IProps, IState> {
         )}
         {creditIndex === 1 && (
           <CastInfoContainer isFullData={crewMore}>
-            {!crewMore && (
-              <More>
-                <MoreIcon
-                  onClick={() => this.setState({ crewMore: true })}
-                  className="fas fa-caret-down"
-                />
-              </More>
-            )}
             <CrewInfo>
               {directors.length !== 0 && (
                 <>
@@ -358,7 +308,7 @@ export default class Credit extends React.Component<IProps, IState> {
           </CastInfoContainer>
         )}
         {creditIndex === 2 && (
-          <CastInfoContainer>
+          <CastInfoContainer isFullData={true}>
             <DetailInfo>
               <DetailOption>
                 <DetailOptionText>스튜디오</DetailOptionText>
@@ -387,6 +337,10 @@ export default class Credit extends React.Component<IProps, IState> {
             </DetailInfo>
           </CastInfoContainer>
         )}
+        {creditIndex === 3 && (
+          <Section getAPI={moviesApi.recommendation} id={id} />
+        )}
+        {creditIndex === 4 && <Section getAPI={moviesApi.similar} id={id} />}
       </Container>
     );
   }

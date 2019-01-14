@@ -24,11 +24,22 @@ const Image = styled("div")<IImageProps>`
 `;
 
 const Rating = styled.span`
-  bottom: 0.3rem;
-  right: 0.3rem;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  font-size: 1rem;
+  font-weight: 900;
+  transform: translate(-50%, -50%);
   position: absolute;
   opacity: 0;
+  transition: 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
+
+const StarIcon = styled.i``;
 
 const ImageContainer = styled.div`
   margin-bottom: 0.3rem;
@@ -54,12 +65,19 @@ const Year = styled.span`
   color: rgba(255, 255, 255, 0.5);
 `;
 
+const SLink = styled(Link)`
+  &:hover {
+    color: white;
+  }
+`;
+
 interface IProps {
   id: number;
   imageUrl: string;
   title: string;
   rating: number;
   year: string;
+  additionalInfo?: string;
 }
 
 export const Poster: React.SFC<IProps> = ({
@@ -67,9 +85,10 @@ export const Poster: React.SFC<IProps> = ({
   imageUrl,
   title,
   rating,
-  year
+  year,
+  additionalInfo
 }) => (
-  <Link to={`/film/${id}`}>
+  <SLink to={`/film/${id}`} title={title}>
     <Container>
       <ImageContainer>
         <Image
@@ -78,16 +97,23 @@ export const Poster: React.SFC<IProps> = ({
           }
         />
         <Rating>
-          <span role="img" aria-label="rating" style={{ color: "goldenrod" }}>
-            ★{" "}
-          </span>
-          {rating}/10
+          <StarIcon
+            className="fas fa-star"
+            style={{
+              color: "#ffd05a",
+              fontSize: "1.5rem",
+              marginBottom: "0.5rem"
+            }}
+          />
+          <span>{rating}/10</span>
         </Rating>
       </ImageContainer>
       <Title>
-        {title.length > 10 ? `${title.substring(0, 10)}...` : title}
+        {title.length > 11 ? `${title.substring(0, 11)}...` : title}
       </Title>
-      <Year>{year}</Year>
+      <Year>
+        {year} {additionalInfo && `/ ${additionalInfo}`}
+      </Year>
     </Container>
-  </Link>
+  </SLink>
 );

@@ -55,10 +55,10 @@ const More = styled.div`
 `;
 
 interface IProps {
-  title: string;
+  title?: string;
   getAPI: any;
   term?: string;
-  id?: string;
+  id?: number;
 }
 
 interface IState {
@@ -94,11 +94,10 @@ export default class Section extends React.Component<IProps, IState> {
         });
       } else if (id !== undefined) {
         const {
-          data: { cast, crew }
-        } = await getAPI(id);
-        console.log(cast, crew);
+          data: { results: movies }
+        } = await getAPI(id, this.state.page);
         this.setState({
-          movies: cast.concat(crew),
+          movies,
           page: this.state.page + 1,
           loading: true
         });
@@ -140,7 +139,7 @@ export default class Section extends React.Component<IProps, IState> {
         } else if (id !== undefined) {
           const {
             data: { results: movies }
-          } = await getAPI(id);
+          } = await getAPI(id, 1);
           this.setState({
             movies,
             page: 2,
@@ -169,13 +168,22 @@ export default class Section extends React.Component<IProps, IState> {
   }
 
   handleOnClickMore = async () => {
-    const { getAPI, term } = this.props;
+    const { getAPI, term, id } = this.props;
     const { page } = this.state;
     try {
-      if (term === undefined) {
+      if (term !== undefined) {
         const {
           data: { results: movies }
-        } = await getAPI(page);
+        } = await getAPI(term, page);
+        this.setState({
+          movies: [...this.state.movies, ...movies],
+          page: page + 1,
+          loading: true
+        });
+      } else if (id !== undefined) {
+        const {
+          data: { results: movies }
+        } = await getAPI(id, page);
         this.setState({
           movies: [...this.state.movies, ...movies],
           page: page + 1,
@@ -184,7 +192,7 @@ export default class Section extends React.Component<IProps, IState> {
       } else {
         const {
           data: { results: movies }
-        } = await getAPI(term, page);
+        } = await getAPI(page);
         this.setState({
           movies: [...this.state.movies, ...movies],
           page: page + 1,
@@ -207,7 +215,7 @@ export default class Section extends React.Component<IProps, IState> {
     const { movies, loading } = this.state;
     return (
       <Container>
-        <Title>{title}</Title>
+        {title && <Title>{title}</Title>}
         <Grid loading={loading}>
           {movies &&
             movies.map((movie: any, index: number) => (
