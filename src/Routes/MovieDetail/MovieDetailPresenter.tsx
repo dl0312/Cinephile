@@ -194,7 +194,7 @@ const Subtitle = styled.div`
   max-width: 100%;
   font-size: 17px;
   line-height: 1.6;
-  color: #9ab;
+  color: white;
   text-shadow: #000 0px 2px 5px;
   margin: 0;
   white-space: pre-wrap;
@@ -518,18 +518,14 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
           <TitleSection>
             <Title>{result.title}</Title>
             <Subtitle>
-              <Link to={`/movies/year/${result.release_date.substring(0, 4)}`}>
-                {result.release_date.substring(0, 4)}
-              </Link>
-              /{result.release_date.substring(5, 7)}/
+              {result.release_date.substring(0, 4)}/
+              {result.release_date.substring(5, 7)}/
               {result.release_date.substring(8)}
               <Divider>•</Divider>
               {result.genres.map((genre: any, index: number) => {
                 return (
                   <React.Fragment key={genre.id}>
-                    <Link style={{}} to={`/genre/${genre.id}`}>
-                      <GenreEmoji genre={genre.name} />
-                    </Link>
+                    <GenreEmoji genre={genre.name} />
                     {result.genres.length - 1 !== index && <span>, </span>}
                   </React.Fragment>
                 );

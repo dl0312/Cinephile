@@ -32,9 +32,19 @@ export default class PersonDetailContainer extends React.Component<
           params: { id }
         }
       } = this.props;
-      const { data: result } = await moviesApi.person(id);
-      console.log(result);
-      this.setState({ person: result, loading: true });
+      const { data: person } = await moviesApi.person(id);
+      person.also_known_as = person.also_known_as.filter((name: string) => {
+        const c = name.charCodeAt(0);
+        if (0x1100 <= c && c <= 0x11ff) return true;
+        if (0x3130 <= c && c <= 0x318f) return true;
+        if (0xac00 <= c && c <= 0xd7a3) return true;
+        return false;
+      });
+      console.log(person.also_known_as);
+      if (person.also_known_as.length > 0) {
+        person.name = person.also_known_as[0];
+      }
+      this.setState({ person, loading: true });
     } catch (error) {
       this.setState({ error: error.message });
     } finally {

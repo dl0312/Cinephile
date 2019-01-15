@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
 
 const NameWithLogo = styled.div`
@@ -88,55 +87,35 @@ interface IProps {
 export default class Company extends React.Component<IProps> {
   render() {
     const {
-      company: { id, logo_path, name, origin_country }
+      company: { logo_path, name, origin_country }
     } = this.props;
     return (
-      <Link style={{ alignSelf: "flex-start" }} to={`/credit/${id}`}>
-        <Container>
-          {logo_path ? (
-            <>
-              <ProfileImage
-                src={`https://image.tmdb.org/t/p/original${logo_path}`}
-              />
+      <Container>
+        {logo_path ? (
+          <>
+            <ProfileImage
+              src={`https://image.tmdb.org/t/p/original${logo_path}`}
+            />
 
-              <NameWithLogo>
-                {origin_country && (
-                  <ReactCountryFlag code={origin_country} svg />
-                )}
-                <div
-                  style={{ marginTop: origin_country ? "0.5rem" : undefined }}
-                >
-                  {name}
-                </div>
-              </NameWithLogo>
-            </>
-          ) : (
-            <>
-              <NotFoundImage />
-              <NameWithoutLogo>
-                {origin_country && (
-                  <ReactCountryFlag code={origin_country} svg />
-                )}
-                <div
-                  style={{ marginTop: origin_country ? "0.5rem" : undefined }}
-                >
-                  {name}
-                </div>
-              </NameWithoutLogo>
-            </>
-          )}
-          {/* <Name>
-            {origin_country && (
-              <ReactCountryFlag
-                style={{ marginBottom: "1rem" }}
-                code={origin_country}
-                svg
-              />
-            )}
-            <div>{name}</div>
-          </Name> */}
-        </Container>
-      </Link>
+            <NameWithLogo>
+              {origin_country && <ReactCountryFlag code={origin_country} svg />}
+              <div style={{ marginTop: origin_country ? "0.5rem" : undefined }}>
+                {name}
+              </div>
+            </NameWithLogo>
+          </>
+        ) : (
+          <>
+            <NotFoundImage />
+            <NameWithoutLogo>
+              {origin_country && <ReactCountryFlag code={origin_country} svg />}
+              <div style={{ marginTop: origin_country ? "0.5rem" : undefined }}>
+                {name}
+              </div>
+            </NameWithoutLogo>
+          </>
+        )}
+      </Container>
     );
   }
 }

@@ -9,37 +9,76 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 55.5rem;
+  margin: 0 auto;
 `;
 
-interface IProfileProps {
-  url: string;
-}
-
-const Profile = styled("div")<IProfileProps>`
-  background: url(${props => props.url});
-  background-size: 100% auto;
-  background-position: center center;
-  border-radius: 100%;
-  width: 10rem;
-  height: 10rem;
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  align-self: flex-start;
   margin-bottom: 2rem;
-  box-shadow: 0px 10px 5px black;
+`;
+
+const Profile = styled.img`
+  background: #161718;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(221, 238, 255, 0.35);
+  border-radius: 5px;
+  width: 13rem;
+`;
+
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  font-size: 1rem;
 `;
 
 const Name = styled.div`
   font-size: 1.5rem;
   font-weight: 900;
-  font-family: "Thasadith", sans-serif;
-  border: 2px solid white;
+  /* font-family: "Thasadith", sans-serif; */
   border-radius: 10px;
-  padding: 0.5rem 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const BirthToDeath = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Gender = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Biography = styled.div`
+  margin-bottom: 1rem;
+  line-height: 1.7rem;
+`;
+
+const PlaceOfBirth = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const KnownForDepartment = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Popularity = styled.div`
+  margin-bottom: 1rem;
 `;
 
 const SectionContainer = styled.div`
   width: 55.5rem;
   margin: 0 auto;
+`;
+
+const Title = styled.span`
+  background-color: #262626;
+  border: 0.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  padding: 0.2rem 0.4rem;
+  margin-right: 0.5rem;
 `;
 
 interface IProps {
@@ -60,8 +99,65 @@ const PersonDetailPresenter: React.SFC<IProps> = ({
     <Loader />
   ) : (
     <Container>
-      <Profile url={`https://image.tmdb.org/t/p/w500${person.profile_path}`} />
-      <Name>{person.name}</Name>
+      <ProfileContainer>
+        <Profile
+          src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+        />
+        <ProfileInfo>
+          <Name>
+            {`${person.name} `}
+            <a
+              target="_blank"
+              href={`https://www.imdb.com/title/${person.imdb_id}`}
+              style={{
+                margin: "0.3rem 0"
+              }}
+            >
+              <img
+                src={
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/800px-IMDB_Logo_2016.svg.png"
+                }
+                style={{ width: "2rem", marginRight: "0.4rem" }}
+              />{" "}
+            </a>
+          </Name>
+          {person.gender !== 0 && (
+            <Gender>
+              <Title>성별</Title>
+              {person.gender === 2 ? "남성" : "여성"}
+            </Gender>
+          )}
+          <BirthToDeath>
+            <Title>출생일</Title>
+            {`${person.birthday && `${person.birthday} ~ `}`}
+            {person.deathday && person.deathday}
+          </BirthToDeath>
+          {person.place_of_birth && (
+            <PlaceOfBirth>
+              <Title>출생지</Title>
+              {person.place_of_birth}
+            </PlaceOfBirth>
+          )}
+          {person.known_for_department && (
+            <KnownForDepartment>
+              <Title>분야</Title>
+              {person.known_for_department}
+            </KnownForDepartment>
+          )}
+          {person.biography && (
+            <Biography>
+              <Title>소개</Title>
+              {person.biography}
+            </Biography>
+          )}
+          {person.popularity && (
+            <Popularity>
+              <Title>인기도</Title>
+              {person.popularity}
+            </Popularity>
+          )}
+        </ProfileInfo>
+      </ProfileContainer>
       <SectionContainer>
         <FilmoSection id={id} getAPI={moviesApi.filmograpy} />
       </SectionContainer>

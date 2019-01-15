@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Avatar } from "antd";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
+import { Mutation } from "react-apollo";
+import { LOG_USER_OUT } from "../sharedQueries.local";
+import { toast } from "react-toastify";
 
 const DownArrow = styled.i`
   position: relative;
@@ -91,86 +95,116 @@ const ItemIcon = styled.i`
   min-width: 1.3rem;
 `;
 
-interface IProps {
+const SLink = styled(Link)`
+  width: 100%;
+  &:hover {
+    color: inherit;
+  }
+`;
+
+interface IProps extends RouteComponentProps {
   user: any;
 }
 
-export default class HeaderProfile extends React.Component<IProps, {}> {
+class HeaderProfile extends React.Component<IProps, {}> {
   render() {
     const { user } = this.props;
     return (
-      <Container>
-        {user.profilePhoto ? (
-          <Avatar
-            shape="circle"
-            // size={"small"}
-            src={user.profilePhoto}
-            style={{ marginRight: "0.5rem", position: "relative", zIndex: 3 }}
-          />
-        ) : (
-          <Avatar
-            shape="circle"
-            // size={"small"}
-            style={{
-              backgroundColor: "#aaa",
-              marginRight: "0.5rem",
-              position: "relative",
-              zIndex: 3
-            }}
-            icon="user"
-          />
+      <Mutation
+        mutation={LOG_USER_OUT}
+        onCompleted={data => {
+          console.log(data);
+          toast.success("Log Out Success");
+          // this.props.history.push(`/`);
+        }}
+      >
+        {logUserOut => (
+          <Container>
+            {user.profilePhoto ? (
+              <Avatar
+                shape="circle"
+                // size={"small"}
+                src={user.profilePhoto}
+                style={{
+                  marginRight: "0.5rem",
+                  position: "relative",
+                  zIndex: 3
+                }}
+              />
+            ) : (
+              <Avatar
+                shape="circle"
+                // size={"small"}
+                style={{
+                  backgroundColor: "#aaa",
+                  marginRight: "0.5rem",
+                  position: "relative",
+                  zIndex: 3
+                }}
+                icon="user"
+              />
+            )}
+            <UserNickName>{user.nickName}</UserNickName>
+            <DownArrow className="fas fa-angle-down" />
+            <MenuContainer>
+              <Menu>
+                <SLink to="/">
+                  <Item>
+                    <ItemIcon className="fas fa-home" />
+                    <span>홈</span>
+                  </Item>
+                </SLink>
+                <Item>
+                  <ItemIcon className="far fa-user" />
+                  <span>프로필</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="fas fa-film" />
+                  <span>내 영화</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="fas fa-pencil-alt" />
+                  <span>감상평</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="far fa-bookmark" />
+                  <span>보고싶어요</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="far fa-list-alt" />
+                  <span>컬렉션</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="far fa-thumbs-up" />
+                  <span>좋아요</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="fas fa-hashtag" />
+                  <span>태그</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="fab fa-connectdevelop" />
+                  <span>네트워크</span>
+                </Item>
+                <Item>
+                  <ItemIcon className="fas fa-cogs" />
+                  <span>설정</span>
+                </Item>
+                <Item
+                  onClick={() => {
+                    logUserOut();
+                  }}
+                >
+                  <ItemIcon className="fas fa-sign-out-alt" />
+                  <span>로그아웃</span>
+                </Item>
+              </Menu>
+            </MenuContainer>
+          </Container>
         )}
-        <UserNickName>{user.nickName}</UserNickName>
-        <DownArrow className="fas fa-angle-down" />
-        <MenuContainer>
-          <Menu>
-            <Item>
-              <ItemIcon className="fas fa-home" />
-              <span>홈</span>
-            </Item>
-            <Item>
-              <ItemIcon className="far fa-user" />
-              <span>프로필</span>
-            </Item>
-            <Item>
-              <ItemIcon className="fas fa-film" />
-              <span>내 영화</span>
-            </Item>
-            <Item>
-              <ItemIcon className="fas fa-pencil-alt" />
-              <span>감상평</span>
-            </Item>
-            <Item>
-              <ItemIcon className="far fa-bookmark" />
-              <span>보고싶어요</span>
-            </Item>
-            <Item>
-              <ItemIcon className="far fa-list-alt" />
-              <span>컬렉션</span>
-            </Item>
-            <Item>
-              <ItemIcon className="far fa-thumbs-up" />
-              <span>좋아요</span>
-            </Item>
-            <Item>
-              <ItemIcon className="fas fa-hashtag" />
-              <span>태그</span>
-            </Item>
-            <Item>
-              <ItemIcon className="fab fa-connectdevelop" />
-              <span>네트워크</span>
-            </Item>
-            <Item>
-              <ItemIcon className="fas fa-cogs" />
-              <span>설정</span>
-            </Item>
-            <Item>
-              <ItemIcon className="fas fa-sign-out-alt" />
-              <span>로그아웃</span>
-            </Item>
-          </Menu>
-        </MenuContainer>
-      </Container>
+      </Mutation>
     );
   }
 }
+
+export default withRouter(HeaderProfile);

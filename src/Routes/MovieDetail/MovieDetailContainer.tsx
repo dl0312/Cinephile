@@ -108,6 +108,7 @@ export default class MovieDetailContainer extends React.Component<
           productionDesigns,
           composers,
           costumes,
+
           loading: true
         });
       } catch (error) {
@@ -176,6 +177,7 @@ export default class MovieDetailContainer extends React.Component<
             productionDesigns,
             composers,
             costumes,
+            creditIndex: 0,
             loading: true
           });
         } catch (error) {

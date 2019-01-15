@@ -39,7 +39,10 @@ const Rating = styled.span`
   justify-content: center;
 `;
 
-const StarIcon = styled.i``;
+const StarIcon = styled.i`
+  &:hover {
+  }
+`;
 
 const ImageContainer = styled.div`
   margin-bottom: 0.3rem;
