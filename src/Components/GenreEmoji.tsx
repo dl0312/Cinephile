@@ -4,7 +4,7 @@ interface IProps {
   genre: string;
 }
 
-const GenreEmoji: React.SFC<IProps> = ({ genre }) => {
+const GenreEmoji = ({ genre }: IProps) => {
   let emoji: any;
   switch (genre) {
     case "액션":

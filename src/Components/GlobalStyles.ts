@@ -113,7 +113,7 @@ const globalStyles = createGlobalStyle`
         width: 1200px;
         height: 675px;
         position: absolute;
-        top: 0;   
+        top: -1rem;   
         left: 50%;
         transform: translateX(-50%);
         background-color: 

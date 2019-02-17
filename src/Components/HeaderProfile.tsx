@@ -112,11 +112,7 @@ class HeaderProfile extends React.Component<IProps, {}> {
     return (
       <Mutation
         mutation={LOG_USER_OUT}
-        onCompleted={data => {
-          console.log(data);
-          toast.success("Log Out Success");
-          // this.props.history.push(`/`);
-        }}
+        onCompleted={data => toast.success("Log Out Success")}
       >
         {logUserOut => (
           <Container>
@@ -190,14 +186,16 @@ class HeaderProfile extends React.Component<IProps, {}> {
                   <ItemIcon className="fas fa-cogs" />
                   <span>설정</span>
                 </Item>
-                <Item
-                  onClick={() => {
-                    logUserOut();
-                  }}
-                >
-                  <ItemIcon className="fas fa-sign-out-alt" />
-                  <span>로그아웃</span>
-                </Item>
+                <Link to="/" style={{ width: "100%" }}>
+                  <Item
+                    onClick={() => {
+                      logUserOut();
+                    }}
+                  >
+                    <ItemIcon className="fas fa-sign-out-alt" />
+                    <span>로그아웃</span>
+                  </Item>
+                </Link>
               </Menu>
             </MenuContainer>
           </Container>

@@ -22,7 +22,7 @@ interface IBackdropProps {
 
 const Backdrop = styled("div")<IBackdropProps>`
   position: absolute;
-  top: -6rem;
+  top: -7rem;
   left: 0;
   width: 1200px;
   height: 675px;
@@ -456,7 +456,9 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
                   <TrailerText>
                     {video.type === "Trailer"
                       ? `${result.title} 예고편`
-                      : "무슨영상일까~~~요?"}
+                      : video.type === "Teaser"
+                      ? `${result.title} 티져`
+                      : `${result.title} 영상`}
                   </TrailerText>
                 </a>
               ))}
@@ -534,9 +536,7 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
               {result.production_countries.map(
                 (country: any, index: number) => (
                   <React.Fragment key={country.iso_3166_1}>
-                    <Link style={{}} to={`/country/${country.iso_3166_1}`}>
-                      <ReactCountryFlag code={country.iso_3166_1} svg />
-                    </Link>
+                    <ReactCountryFlag code={country.iso_3166_1} svg />
                     {result.production_countries.length - 1 !== index && (
                       <span>, </span>
                     )}

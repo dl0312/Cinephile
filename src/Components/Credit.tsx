@@ -61,7 +61,7 @@ const CastInfoContainer = styled("div")<ICastInfoContainerProps>`
 const CastInfo = styled.div`
   flex-flow: row wrap;
   display: flex;
-  align-content: flex-start;
+  align-content: center;
   transition: 1s ease;
 `;
 

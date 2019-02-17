@@ -84,6 +84,7 @@ class HeaderSearch extends React.Component<IProps, IState> {
       this.props.history.push({
         pathname: `/search/${this.state.searchTerm}`
       });
+      this.setState({ searchTerm: "", isSearchMode: false });
     }
   };
 

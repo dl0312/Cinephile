@@ -21,6 +21,8 @@ import Logo from "../../asset/logo.png";
 // } from "src/types/api";
 
 import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { moviesApi } from "../../api";
+import { Link } from "react-router-dom";
 
 const FormItem = Form.Item;
 
@@ -31,7 +33,15 @@ const LogoImage = styled.img`
   z-index: 2;
 `;
 
-const LoginContainer = styled.div`
+interface ILoginContainerProps {
+  url: string;
+}
+
+const LoginContainer = styled("div")<ILoginContainerProps>`
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(${props => props.url});
+  background-position: center center;
+  background-size: cover;
   position: absolute;
   top: 0;
   left: 0;
@@ -55,6 +65,7 @@ interface IProps {
 }
 
 interface IState {
+  movie: any;
   email: string;
   password: string;
 }
@@ -75,9 +86,24 @@ class LogIn extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
+      movie: null,
       email: "",
       password: ""
     };
+  }
+
+  async componentDidMount() {
+    console.log("didmount");
+    try {
+      const {
+        data: { results: movies }
+      } = await moviesApi.popular(1);
+      this.setState({
+        movie: movies[Math.floor(Math.random() * 20)]
+      });
+    } catch (error) {
+    } finally {
+    }
   }
 
   public handleSubmit = (e: any, mutationFn: any) => {
@@ -93,6 +119,7 @@ class LogIn extends React.Component<IProps, IState> {
 
   public render() {
     const { getFieldDecorator } = this.props.form;
+    const { movie } = this.state;
     return (
       <Mutation mutation={LOG_USER_IN}>
         {logUserIn => (
@@ -113,7 +140,12 @@ class LogIn extends React.Component<IProps, IState> {
             }}
           >
             {mutation => (
-              <LoginContainer>
+              <LoginContainer
+                url={
+                  movie &&
+                  `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                }
+              >
                 <LogoImage src={Logo} />
                 <Form
                   onSubmit={e => {
@@ -149,7 +181,7 @@ class LogIn extends React.Component<IProps, IState> {
                             style={{ color: "rgba(0,0,0,.25)" }}
                           />
                         }
-                        placeholder="E-mail"
+                        placeholder="이메일"
                       />
                     )}
                   </FormItem>
@@ -170,7 +202,7 @@ class LogIn extends React.Component<IProps, IState> {
                           />
                         }
                         type="password"
-                        placeholder="Password"
+                        placeholder="비밀번호"
                       />
                     )}
                   </FormItem>
@@ -179,16 +211,14 @@ class LogIn extends React.Component<IProps, IState> {
                       valuePropName: "checked",
                       initialValue: true
                     })(
-                      <Checkbox style={{ color: "white" }}>
-                        Remember me
-                      </Checkbox>
+                      <Checkbox style={{ color: "white" }}>기억하기</Checkbox>
                     )}
                     <a
                       className="login-form-forgot"
                       href=""
                       style={{ float: "right" }}
                     >
-                      Forgot password
+                      비밀번호 찾기
                     </a>
                     <Button
                       type="primary"
@@ -196,7 +226,7 @@ class LogIn extends React.Component<IProps, IState> {
                       className="login-form-button"
                       style={{ width: "100%" }}
                     >
-                      Log in
+                      로그인
                     </Button>
                     <Mutation mutation={LOG_USER_IN}>
                       {logUserIn => (
@@ -246,7 +276,7 @@ class LogIn extends React.Component<IProps, IState> {
                                     }}
                                   >
                                     <CompanyIcon className="fab fa-facebook-f" />{" "}
-                                    Facebook Log in
+                                    페이스북 로그인
                                   </Button>
                                 )}
                               />
@@ -307,13 +337,13 @@ class LogIn extends React.Component<IProps, IState> {
                                     }}
                                   >
                                     <CompanyIcon className="fab fa-google" />{" "}
-                                    Google Log in
+                                    구글 로그인
                                   </Button>
                                 )}
                               />
                             )}
                           </Mutation>
-                          <Button
+                          {/* <Button
                             type="primary"
                             style={{
                               width: "100%",
@@ -407,11 +437,20 @@ class LogIn extends React.Component<IProps, IState> {
                           >
                             <CompanyIcon className="fab fa-discord" />
                             Discord Log in
+                          </Button> */}
+                          <Button
+                            type="primary"
+                            style={{
+                              width: "100%",
+                              backgroundColor: "MediumSlateBlue",
+                              borderColor: "MediumSlateBlue"
+                            }}
+                          >
+                            <Link to="/register">가입하기</Link>
                           </Button>
                         </>
                       )}
                     </Mutation>
-                    Or <a href="/register">register now!</a>
                   </FormItem>
                 </Form>
               </LoginContainer>

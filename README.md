@@ -1,6 +1,6 @@
-# Nomflix
+# Cinephile
 
-Learning React and ES6 by building a Movie Discovery App.
+Film Community by React and ES6
 
 ## Screens
 

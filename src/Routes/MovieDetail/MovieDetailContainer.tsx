@@ -1,6 +1,8 @@
 import React from "react";
 import { MovieDetailPresenter } from "./MovieDetailPresenter";
 import { moviesApi } from "../../api";
+// import { GET_MOVIE_GOODS } from "./MovieDetailQueries";
+// import { Query } from "react-apollo";
 
 interface IProps {
   match: {

@@ -222,7 +222,7 @@ class Header extends React.Component<IProps, IState> {
               </GetMyProfileQuery>
             ) : (
               <>
-                <Item current={pathname === "/login"}>
+                {/* <Item current={pathname === "/login"}>
                   <SLink to="/login">로그인</SLink>
                 </Item>
                 <Item current={pathname === "/register"}>
@@ -236,7 +236,7 @@ class Header extends React.Component<IProps, IState> {
                 </Item>
                 <Item current={pathname === "/goods"}>
                   <SLink to="/goods">굿즈나눔 교환</SLink>
-                </Item>
+                </Item> */}
                 <CustomHeaderContainer>
                   <HeaderSearch />
                 </CustomHeaderContainer>

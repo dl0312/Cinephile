@@ -77,7 +77,7 @@ const Title = styled.span`
   background-color: #262626;
   border: 0.5px solid rgba(255, 255, 255, 0.5);
   border-radius: 5px;
-  padding: 0.2rem 0.4rem;
+  padding: 0.15rem 0.4rem 0.2rem;
   margin-right: 0.5rem;
 `;
 

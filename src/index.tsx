@@ -8,7 +8,7 @@ import { ApolloProvider } from "react-apollo";
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Router>
-      <Route path="/" component={App} />
+      <Route path="*" component={App} />
     </Router>
   </ApolloProvider>,
   document.getElementById("root") as HTMLElement
