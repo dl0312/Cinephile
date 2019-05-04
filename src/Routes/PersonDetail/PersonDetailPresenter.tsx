@@ -108,7 +108,7 @@ const PersonDetailPresenter: React.SFC<IProps> = ({
             {`${person.name} `}
             <a
               target="_blank"
-              href={`https://www.imdb.com/title/${person.imdb_id}`}
+              href={`https://www.imdb.com/name/${person.imdb_id}`}
               style={{
                 margin: "0.3rem 0"
               }}
@@ -159,7 +159,7 @@ const PersonDetailPresenter: React.SFC<IProps> = ({
         </ProfileInfo>
       </ProfileContainer>
       <SectionContainer>
-        <FilmoSection id={id} getAPI={moviesApi.filmograpy} />
+        <FilmoSection id={id} getAPI={moviesApi.filmography} />
       </SectionContainer>
     </Container>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import { Loader } from "../../Components/Loader";
@@ -462,24 +461,26 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
                   </TrailerText>
                 </a>
               ))}
-              <a
-                target="_blank"
-                href={`https://www.imdb.com/title/${result.imdb_id}`}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "0.3rem 0"
-                }}
-              >
-                <img
-                  src={
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/800px-IMDB_Logo_2016.svg.png"
-                  }
-                  style={{ width: "2rem", marginRight: "0.4rem" }}
-                />{" "}
-                {`${result.title} IMDb`}
-              </a>
+              {result.imdb_id && (
+                <a
+                  target="_blank"
+                  href={`https://www.imdb.com/title/${result.imdb_id}`}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: "0.3rem 0"
+                  }}
+                >
+                  <img
+                    src={
+                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/800px-IMDB_Logo_2016.svg.png"
+                    }
+                    style={{ width: "2rem", marginRight: "0.4rem" }}
+                  />{" "}
+                  {`${result.title} IMDb`}
+                </a>
+              )}
             </WatchPanel>
             <MoreService>
               <Link to={"/"}>
@@ -593,29 +594,6 @@ export const MovieDetailPresenter: React.SFC<IProps> = ({
             />
           </SideInfoSection>
         </TextInfo>
-        {/* <Data>
-          <ItemContainer>
-            <Item>{result.release_date.substring(0, 4)}</Item>
-            <Divider>•</Divider>
-            <Item>{result.runtime} min</Item>
-            <Divider>•</Divider>
-            <Item>
-              {result.genres &&
-                result.genres.map((genre, index) =>
-                  index === result.genres.length - 1
-                    ? genre.name
-                    : `${genre.name} / `
-                )}
-            </Item>
-          </ItemContainer>
-          <Overview>{result.overview}</Overview>
-        </Data> */}
       </Content>
     </Container>
   );
-
-MovieDetailPresenter.propTypes = {
-  result: PropTypes.object,
-  error: PropTypes.string,
-  loading: PropTypes.bool.isRequired
-};

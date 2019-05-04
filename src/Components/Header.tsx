@@ -2,11 +2,11 @@ import React from "react";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import styled from "styled-components";
 // import Logo from "../asset/logo.png";
-import { getMyProfile } from "../types/api";
-import { Query } from "react-apollo";
-import { toast } from "react-toastify";
-import HeaderProfile from "./HeaderProfile";
-import { GET_MY_PROFILE_QUERY } from "../sharedQueries";
+// import { getMyProfile } from "../types/api";
+// import { Query } from "react-apollo";
+// import { toast } from "react-toastify";
+// import HeaderProfile from "./HeaderProfile";
+// import { GET_MY_PROFILE_QUERY } from "../sharedQueries";
 import HeaderSearch from "./HeaderSearch";
 
 interface IGradientBackgroundProps {
@@ -89,32 +89,32 @@ const CustomHeaderContainer = styled.div`
   justify-content: center;
 `;
 
-interface IItemProps {
-  current: boolean;
-}
+// interface IItemProps {
+//   current: boolean;
+// }
 
-const Item = styled("li")<IItemProps>`
-  padding: 0 1rem;
-  height: 3rem;
-  text-align: center;
-  border-bottom: 3px solid
-    ${props => (props.current ? "#3498db" : "transparent")};
-  transition: border-bottom 0.5s ease-in-out;
-`;
+// const Item = styled("li")<IItemProps>`
+//   padding: 0 1rem;
+//   height: 3rem;
+//   text-align: center;
+//   border-bottom: 3px solid
+//     ${props => (props.current ? "#3498db" : "transparent")};
+//   transition: border-bottom 0.5s ease-in-out;
+// `;
 
-const SLink = styled(Link)`
-  height: 3rem;
-  font-size: 1rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Nanum Gothic", sans-serif;
-  position: relative;
-  z-index: 2;
-  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
-  /* letter-spacing: 0.5rem; */
-`;
+// const SLink = styled(Link)`
+//   height: 3rem;
+//   font-size: 1rem;
+//   font-weight: 900;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-family: "Nanum Gothic", sans-serif;
+//   position: relative;
+//   z-index: 2;
+//   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+//   /* letter-spacing: 0.5rem; */
+// `;
 
 const PlainLink = styled(Link)`
   &:hover {
@@ -122,7 +122,7 @@ const PlainLink = styled(Link)`
   }
 `;
 
-class GetMyProfileQuery extends Query<getMyProfile> {}
+// class GetMyProfileQuery extends Query<getMyProfile> {}
 
 interface IProps extends RouteComponentProps<any> {
   isLoggedIn: boolean;
@@ -159,8 +159,8 @@ class Header extends React.Component<IProps, IState> {
 
   render() {
     const {
-      location: { pathname },
-      isLoggedIn
+      // location: { pathname },
+      // isLoggedIn
     } = this.props;
     const { darken } = this.state;
     return (
@@ -179,10 +179,9 @@ class Header extends React.Component<IProps, IState> {
             </LogoText>
           </PlainLink>
           <NavList>
-            {isLoggedIn ? (
+            {/* {isLoggedIn ? (
               <GetMyProfileQuery
                 query={GET_MY_PROFILE_QUERY}
-                fetchPolicy={"cache-and-network"}
               >
                 {({ loading, error, data }) => {
                   if (loading) {
@@ -221,27 +220,13 @@ class Header extends React.Component<IProps, IState> {
                 }}
               </GetMyProfileQuery>
             ) : (
-              <>
-                {/* <Item current={pathname === "/login"}>
-                  <SLink to="/login">로그인</SLink>
-                </Item>
-                <Item current={pathname === "/register"}>
-                  <SLink to="/register">회원가입</SLink>
-                </Item>
-                <Item current={pathname === "/community/1/"}>
-                  <SLink to="/community/1/">영화수다</SLink>
-                </Item>
-                <Item current={pathname === "/ticket"}>
-                  <SLink to="/ticket">표나누기</SLink>
-                </Item>
-                <Item current={pathname === "/goods"}>
-                  <SLink to="/goods">굿즈나눔 교환</SLink>
-                </Item> */}
-                <CustomHeaderContainer>
-                  <HeaderSearch />
-                </CustomHeaderContainer>
-              </>
-            )}
+              <CustomHeaderContainer>
+                <HeaderSearch />
+              </CustomHeaderContainer>
+            )} */}
+            <CustomHeaderContainer>
+              <HeaderSearch />
+            </CustomHeaderContainer>
           </NavList>
         </List>
       </Container>

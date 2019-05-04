@@ -96,7 +96,7 @@ const DepartmentText = styled.div`
 const DetailInfo = styled.div`
   flex-flow: column wrap;
   display: flex;
-  align-content: flex-start;
+  align-content: center;
   transition: 1s ease;
 `;
 
